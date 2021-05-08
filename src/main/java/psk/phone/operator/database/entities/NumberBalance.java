@@ -7,14 +7,16 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @NoArgsConstructor
-@Entity
 @AllArgsConstructor
 @Data
-public class PhoneNumber {
+@Entity
+public class NumberBalance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idPhoneNumber;
-    @Column(unique=true)
-    private String number;
-    private String pin;
+    private Long idNumberBalance;
+    @OneToOne
+    private PhoneNumber phoneNumber;
+    private Double balanceAccount;
+    private Double balanceInternet;
+    private int smsBalance;
 }

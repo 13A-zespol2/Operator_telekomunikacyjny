@@ -5,16 +5,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
 @Data
-public class PhoneNumber {
+public class SmsHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idPhoneNumber;
-    @Column(unique=true)
-    private String number;
-    private String pin;
+    private Long idSmsHistory;
+    @ManyToOne
+    private PhoneNumber phoneNumberSender;
+    @ManyToOne
+    private PhoneNumber phoneNumberReceiver;
+    private String message;
+    private Date dateSms;
+
 }
