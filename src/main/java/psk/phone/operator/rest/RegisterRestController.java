@@ -2,23 +2,22 @@ package psk.phone.operator.rest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import psk.phone.operator.database.entities.User;
-import psk.phone.operator.database.repository.UserRepository;
+import psk.phone.operator.service.JwtUserDetailsService;
+import psk.phone.operator.transport.dto.UserDto;
 
-import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLIntegrityConstraintViolationException;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class RegisterRestController {
+    @Autowired
+    private JwtUserDetailsService userDetailsService;
 
-    private final UserRepository userRepository;
-
-    @PostMapping(path = "/register")
+   /* @PostMapping(path = "/register")
     public ResponseEntity<User> registerUser(HttpServletRequest request) {
 
         String name = request.getParameter("name");
@@ -36,6 +35,12 @@ public class RegisterRestController {
 
 
         return ResponseEntity.ok().build();
+    }*/
+
+
+    @PostMapping(value = "/register")
+    public ResponseEntity<?> saveUser(@RequestBody UserDto user) throws Exception {
+        return ResponseEntity.ok(userDetailsService.save(user));
     }
 
 
