@@ -18,7 +18,7 @@ public class Contract {
     private Date dateOfSigning;
     private String typeContract;
     private int duration;
-    @ManyToOne
+    @OneToOne
     private PhoneNumber phoneNumber;
 
 }

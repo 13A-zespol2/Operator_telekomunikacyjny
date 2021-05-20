@@ -1,3 +1,4 @@
+
 package psk.phone.operator.database.entities;
 
 import lombok.AllArgsConstructor;
