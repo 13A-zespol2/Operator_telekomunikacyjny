@@ -19,11 +19,14 @@ public class User {
     @Column(unique=true)
     private String email;
     private String password;
+    private String googleHash;
 
-    public User(String name, String surname, String email, String password) {
+
+    public User(String name, String surname, String email, String password, String googleHash) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
+        this.googleHash = googleHash;
     }
 }

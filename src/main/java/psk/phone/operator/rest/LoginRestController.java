@@ -22,7 +22,7 @@ public class LoginRestController {
         return "tasd";
     }
 
-    @PostMapping(value = "/loginUSer")
+    @PostMapping(value = "googleAuthlogin")
     public Principal user(Principal principal) {
         return principal;
     }
