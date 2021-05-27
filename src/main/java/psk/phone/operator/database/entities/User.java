@@ -5,12 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.function.Supplier;
 
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
 @Data
-public class User {
+public class User  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUser;
@@ -19,14 +20,11 @@ public class User {
     @Column(unique=true)
     private String email;
     private String password;
-    private String googleHash;
 
-
-    public User(String name, String surname, String email, String password, String googleHash) {
+    public User(String name, String surname, String email, String password) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
-        this.googleHash = googleHash;
     }
 }

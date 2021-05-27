@@ -16,14 +16,5 @@ public class LoginRestController {
         System.out.println("Sda");
     }
 
-    @GetMapping("/htllo")
-    public String sayHello()
-    {
-        return "tasd";
-    }
 
-    @PostMapping(value = "googleAuthlogin")
-    public Principal user(Principal principal) {
-        return principal;
-    }
 }

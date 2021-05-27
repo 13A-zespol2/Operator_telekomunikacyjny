@@ -1,45 +1,60 @@
 package psk.phone.operator.config.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import psk.phone.operator.service.CustomUserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import psk.phone.operator.database.entities.User;
+import psk.phone.operator.service.CustomOAuth2UserService;
+import psk.phone.operator.service.DefaultUserService;
+import psk.phone.operator.transport.converter.UserConverter;
+
+import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
+    private DefaultUserService defaultUserService;
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new CustomUserDetailsService();
-    }
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    @Autowired
+    private CustomOAuth2UserService oauthUserService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-      http.authorizeRequests()
-                .antMatchers("/","/login","/register").permitAll()
-                .and()
-                .antMatcher("/**").authorizeRequests()
+        http.csrf().disable().authorizeRequests()
+                .antMatchers("/register", "/login", "/oauth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .oauth2Login().and().csrf().disable();
+                .formLogin().permitAll()
+                .and()
+                .oauth2Login()
+                .loginPage("/login")
+                .userInfoEndpoint()
+                .userService(oauthUserService).and().successHandler((request, response, authentication) -> {
 
+            if (authentication != null) {
+                Object principal = authentication.getPrincipal();
+                DefaultOidcUser user;
+                if (principal instanceof DefaultOidcUser) {
+                    user = (DefaultOidcUser) principal;
+                    User userLogin = defaultUserService.processOAuthPostLogin(UserConverter.toDtoGoogle(user));
 
-/*
-                .authorizeRequests()
-                .antMatchers("/login", "/register","/loginUSer").permitAll()
-                .and().httpBasic().and().csrf().disable().antMatcher("/oauth/**").oauth2Login().permitAll();
-*/
+                    if (userLogin != null) {
+                        request.getSession().setAttribute("user", userLogin);
+                        response.setStatus(HttpServletResponse.SC_OK);
+
+                    }
+                }
+            }
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        });
 
     }
 
@@ -53,5 +68,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/webjars/**");
     }
 
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
+    }
 
 }
