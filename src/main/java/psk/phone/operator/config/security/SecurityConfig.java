@@ -31,11 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().authorizeRequests()
                 .antMatchers("/register", "/login", "/oauth/**").permitAll()
                 .anyRequest().authenticated()
-                .and()
-                .formLogin().permitAll()
-                .and()
+                .and().formLogin().loginPage("/login").permitAll().and()
                 .oauth2Login()
-                .loginPage("/login")
                 .userInfoEndpoint()
                 .userService(oauthUserService).and().successHandler((request, response, authentication) -> {
 

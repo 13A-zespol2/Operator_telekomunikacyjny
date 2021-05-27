@@ -7,26 +7,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import psk.phone.operator.database.entities.User;
 import psk.phone.operator.database.repository.UserRepository;
 import psk.phone.operator.service.DefaultUserService;
-import psk.phone.operator.transport.converter.UserConverter;
 import psk.phone.operator.transport.dto.UserDto;
+import psk.phone.operator.transport.dto.UserPhoneDto;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class RegisterRestController {
     @Autowired
-    private UserRepository userRepository;
-    @Autowired
     private DefaultUserService defaultUserService;
 
     @PostMapping(value = "/register")
-    public ResponseEntity saveUser(@RequestBody UserDto user) throws Exception {
-        User user1 = defaultUserService.registerNewUserAccount(user);
-        UserDto userDto = UserConverter.toDto(user1);
-        return ResponseEntity.ok(userDto);
+    public ResponseEntity saveUser(@RequestBody UserDto user) {
+        UserPhoneDto user1 = defaultUserService.registerNewUserAccount(user);
+        System.out.println("dsa");
+        return ResponseEntity.ok(ResponseEntity.ok());
     }
 
 
