@@ -31,11 +31,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().authorizeRequests()
                 .antMatchers("/register", "/login", "/oauth/**").permitAll()
                 .anyRequest().authenticated()
-                .and().formLogin().loginPage("/login").permitAll().and()
+                .and()
                 .oauth2Login()
                 .userInfoEndpoint()
                 .userService(oauthUserService).and().successHandler((request, response, authentication) -> {
-
             if (authentication != null) {
                 Object principal = authentication.getPrincipal();
                 DefaultOidcUser user;
@@ -53,6 +52,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         });
 
+
+
+
+    /*            .csrf().disable().authorizeRequests()
+                .antMatchers("/register", "/login", "/oauth/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .oauth2Login()
+                .userInfoEndpoint()
+                .userService(oauthUserService).and().successHandler((request, response, authentication) -> {
+            if (authentication != null) {
+                Object principal = authentication.getPrincipal();
+                DefaultOidcUser user;
+                if (principal instanceof DefaultOidcUser) {
+                    user = (DefaultOidcUser) principal;
+                    User userLogin = defaultUserService.processOAuthPostLogin(UserConverter.toDtoGoogle(user));
+
+                    if (userLogin != null) {
+                        request.getSession().setAttribute("user", userLogin);
+                        response.setStatus(HttpServletResponse.SC_OK);
+
+                    }
+                }
+            }
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        });
+*/
     }
 
     @Override
