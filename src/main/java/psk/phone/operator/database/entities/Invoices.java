@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Date;
 
@@ -17,7 +18,7 @@ public class Invoices {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idInvoice;
-    private Date dateInvoice;
+    private LocalDate dateInvoice;
     @OneToMany
     private List<PhoneHistory> phoneHistoryList;
     @OneToMany

@@ -1,6 +1,7 @@
 package psk.phone.operator.rest;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ public class RegisterRestController {
     @Autowired
     private DefaultUserService defaultUserService;
 
+    @SneakyThrows
     @PostMapping(value = "/register")
     public ResponseEntity saveUser(@RequestBody UserDto user) {
         UserPhoneDto user1 = defaultUserService.registerNewUserAccount(user);

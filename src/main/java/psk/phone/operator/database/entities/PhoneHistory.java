@@ -21,5 +21,6 @@ public class PhoneHistory {
     private PhoneNumber phoneNumberReceiver;
     private String status;
     private Date dateCall;
+    private Date dateCallEnd;
 
 }

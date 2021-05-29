@@ -15,23 +15,27 @@ import psk.phone.operator.transport.converter.UserPhoneNumberConverter;
 import psk.phone.operator.transport.dto.UserDto;
 import psk.phone.operator.transport.dto.UserPhoneDto;
 
+import javax.management.openmbean.OpenDataException;
+
 @Service
 public class DefaultUserService {
     private final UserRepository userRepository;
     private final UserPhoneNumberRepository userPhoneNumberRepository;
     private final PasswordEncoder passwordEncoder;
     private final PhoneNumberGeneratorService phoneNumberGeneratorService;
+    private final PackageService packageService;
 
     @Autowired
-    public DefaultUserService(UserRepository userRepository, UserPhoneNumberRepository userPhoneNumberRepository, PasswordEncoder passwordEncoder, PhoneNumberGeneratorService phoneNumberGeneratorService) {
+    public DefaultUserService(UserRepository userRepository, UserPhoneNumberRepository userPhoneNumberRepository, PasswordEncoder passwordEncoder, PhoneNumberGeneratorService phoneNumberGeneratorService, PackageService packageService) {
         this.userRepository = userRepository;
         this.userPhoneNumberRepository = userPhoneNumberRepository;
         this.passwordEncoder = passwordEncoder;
         this.phoneNumberGeneratorService = phoneNumberGeneratorService;
+        this.packageService = packageService;
     }
 
 
-    public UserPhoneDto registerNewUserAccount(UserDto userDto) throws UserAlreadyExistException {
+    public UserPhoneDto registerNewUserAccount(UserDto userDto) throws UserAlreadyExistException, OpenDataException {
         User user;
         try {
             user = emailExist(userDto.getEmail());
@@ -42,22 +46,26 @@ public class DefaultUserService {
             user = userRepository.save(UserConverter.toEntity(userDto));
         }
         PhoneNumber phoneNumber = phoneNumberGeneratorService.generatePhoneNumberForUser();
+
         return UserPhoneNumberConverter.toDto(registerUserNumber(user, phoneNumber));
     }
 
 
     public User loginUser(UserDto userDto) throws UserAlreadyExistException {
+        try {
+            User user = emailExist(userDto.getEmail());
+            if (user != null) {
+                String password = userDto.getPassword();
 
-        User user = emailExist(userDto.getEmail());
-
-        if (user != null) {
-            String password = userDto.getPassword();
-
-            if (!passwordEncoder.matches(password, userDto.getPassword())) {
-                throw new UserPasswordException("Password user " + user.getEmail() + " incorrectly");
+                if (!passwordEncoder.matches(password, user.getPassword())) {
+                    throw new UserPasswordException("Password user " + user.getEmail() + " incorrectly");
+                }
             }
+            return user;
+        } catch (UserAlreadyExistException e) {
+            return null;
         }
-        return user;
+
     }
 
 
@@ -77,8 +85,10 @@ public class DefaultUserService {
     }
 
 
-    private UserPhoneNumber registerUserNumber(User user, PhoneNumber phoneNumber) {
-        return userPhoneNumberRepository.save(new UserPhoneNumber(user, phoneNumber));
+    private UserPhoneNumber registerUserNumber(User user, PhoneNumber phoneNumber) throws OpenDataException {
+        UserPhoneNumber save = userPhoneNumberRepository.save(new UserPhoneNumber(user, phoneNumber));
+        packageService.registerNewUserPackage(save.getPhoneNumber());
+        return save;
     }
 
 
