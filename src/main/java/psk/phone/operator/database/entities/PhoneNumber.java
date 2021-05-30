@@ -8,7 +8,6 @@ import javax.persistence.*;
 
 @NoArgsConstructor
 @Entity
-@AllArgsConstructor
 @Data
 public class PhoneNumber {
     @Id
@@ -17,4 +16,9 @@ public class PhoneNumber {
     @Column(unique=true)
     private String number;
     private String pin;
+
+    public PhoneNumber(String number, String pin) {
+        this.number = number;
+        this.pin = pin;
+    }
 }

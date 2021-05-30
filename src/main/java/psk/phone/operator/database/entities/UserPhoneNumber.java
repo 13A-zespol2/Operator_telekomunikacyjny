@@ -9,7 +9,6 @@ import javax.persistence.*;
 
 @NoArgsConstructor
 @Entity
-@AllArgsConstructor
 @Data
 public class UserPhoneNumber {
     @Id
@@ -22,4 +21,9 @@ public class UserPhoneNumber {
     @JoinColumn(name = "idPhoneNumber")
     @ManyToOne(optional = false)
     private PhoneNumber phoneNumber;
+
+    public UserPhoneNumber(User user, PhoneNumber phoneNumber) {
+        this.user = user;
+        this.phoneNumber = phoneNumber;
+    }
 }

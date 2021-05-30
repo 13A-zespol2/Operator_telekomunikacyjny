@@ -6,7 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @NoArgsConstructor
@@ -18,13 +19,15 @@ public class Invoices {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idInvoice;
     private String InvoiceNumber;
-    private Date dateInvoice;
 
+    private LocalDate dateInvoice;
     @OneToMany
     private List<PhoneHistory> phoneHistoryList;
     @OneToMany
     private List<SmsHistory> smsHistoryList;
     private Double price;
     private String statusInvoice;
+    @ManyToOne
+    private User user;
 
 }
