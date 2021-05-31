@@ -24,4 +24,5 @@ public class Package {
     private double accountBalance;
     private int freeMinutes;
     private int freeSMS;
+    private double price;
 }

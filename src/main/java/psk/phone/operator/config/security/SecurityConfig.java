@@ -51,11 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             }
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         });
-
-
-
-
-    /*            .csrf().disable().authorizeRequests()
+      /*  http.csrf().disable().authorizeRequests()
                 .antMatchers("/register", "/login", "/oauth/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -77,8 +73,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 }
             }
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        });
-*/
+        });*/
+
     }
 
     @Override
