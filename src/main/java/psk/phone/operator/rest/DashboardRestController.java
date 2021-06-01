@@ -15,8 +15,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/dashboard")
 public class DashboardRestController {
-    private PhoneNumberGeneratorService phoneNumberGeneratorService;
-    private UserPhoneNumberRepository userPhoneNumberRepository;
+    private final PhoneNumberGeneratorService phoneNumberGeneratorService;
+    private final UserPhoneNumberRepository userPhoneNumberRepository;
     private UserRepository userRepository;
 
     @Autowired
