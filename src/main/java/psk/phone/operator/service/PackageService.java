@@ -30,21 +30,9 @@ public class PackageService {
         if (starter.isEmpty()) {
             throw new OpenDataException("Not found STARTER package");
         }
-        PurchasedPackages purchasedPackages = new PurchasedPackages(LocalDate.now(), null, starter.get(), phoneNumber);
-        return purchasedPackagesRepository.save(purchasedPackages);
-    }
-
-    public PurchasedPackages changePurchasedPackage(PhoneNumber phoneNumber, Package aPackage) {
-        Optional<PurchasedPackages> purchasedPackagesOptional = purchasedPackagesRepository.findPurchasedPackagesByPhoneNumberAndPackageEndDate(phoneNumber, null);
-
-        if (purchasedPackagesOptional.isEmpty()) {
-            throw new OperatorException("NOT FOUND PACKAGE TO CHANGE");
-        }
-        LocalDate nowDate = LocalDate.now();
-        PurchasedPackages purchasedPackages = purchasedPackagesOptional.get();
-        purchasedPackages.setPackageEndDate(nowDate);
-        purchasedPackagesRepository.save(purchasedPackages);
-        return purchasedPackagesRepository.save(new PurchasedPackages(nowDate, null, aPackage, phoneNumber));
+        //TODO
+      // PurchasedPackages purchasedPackages = new PurchasedPackages(LocalDate.now(), null, starter.get(), phoneNumber);
+        return purchasedPackagesRepository.save(null);
     }
 
 }

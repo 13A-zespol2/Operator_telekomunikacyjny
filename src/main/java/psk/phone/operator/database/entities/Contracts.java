@@ -1,8 +1,9 @@
 package psk.phone.operator.database.entities;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,15 +12,16 @@ import javax.persistence.Id;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
-
-public class Package {
+public class Contracts {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String namePackage;
-    private int numberOfSms;
-    private int numberOfMinutes;
-    private double price;
+    private Long idContract;
+    private String name;
+    private int contractMinutes;
+    private int contractSms;
+    private double monthlyCost;
+
 }
