@@ -1,24 +1,26 @@
 package psk.phone.operator.database.entities;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Entity
-public class PurchasedPackages {
+public class ContractsPhoneNumber {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idPurchasePackage;
+    private Long idContractPhoneNumber;
     @ManyToOne
-    private Package aPackage;
+    private Contracts contracts;
     @ManyToOne
     private PhoneNumber phoneNumber;
-    private LocalDate datePurchaseDate;
+    private Date datePurchase;
 
 }

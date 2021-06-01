@@ -45,9 +45,8 @@ public class DefaultUserService {
             userDto.setPassword(passwordEncoder.encode(password));
             user = userRepository.save(UserConverter.toEntity(userDto));
         }
-        PhoneNumber phoneNumber = phoneNumberGeneratorService.generatePhoneNumberForUser();
 
-        return UserPhoneNumberConverter.toDto(registerUserNumber(user, phoneNumber));
+        return UserPhoneNumberConverter.toDto(registerUserNumber(user));
     }
 
 
@@ -69,13 +68,14 @@ public class DefaultUserService {
     }
 
 
-    public User processOAuthPostLogin(UserDto userDto) {
+    public User processOAuthPostLogin(UserDto userDto) throws OpenDataException {
         try {
             return emailExist(userDto.getEmail());
         } catch (UserAlreadyExistException e) {
             User user = userRepository.save(UserConverter.toEntity(userDto));
             String password = userDto.getPassword();
             userDto.setPassword(passwordEncoder.encode(password));
+            UserPhoneNumber userPhoneNumber = registerUserNumber(user);
             return user;
         }
     }
@@ -85,7 +85,8 @@ public class DefaultUserService {
     }
 
 
-    private UserPhoneNumber registerUserNumber(User user, PhoneNumber phoneNumber) throws OpenDataException {
+    private UserPhoneNumber registerUserNumber(User user) throws OpenDataException {
+        PhoneNumber phoneNumber = phoneNumberGeneratorService.generatePhoneNumberForUser();
         UserPhoneNumber save = userPhoneNumberRepository.save(new UserPhoneNumber(user, phoneNumber));
         packageService.registerNewUserPackage(save.getPhoneNumber());
         return save;

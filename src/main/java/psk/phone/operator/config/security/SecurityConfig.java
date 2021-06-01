@@ -15,6 +15,7 @@ import psk.phone.operator.service.CustomOAuth2UserService;
 import psk.phone.operator.service.DefaultUserService;
 import psk.phone.operator.transport.converter.UserConverter;
 
+import javax.management.openmbean.OpenDataException;
 import javax.servlet.http.HttpServletResponse;
 
 @Configuration
@@ -28,6 +29,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+
+
         http.csrf().disable().authorizeRequests()
                 .antMatchers("/register", "/login", "/oauth/**").permitAll()
                 .anyRequest().authenticated()
@@ -40,45 +44,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 DefaultOidcUser user;
                 if (principal instanceof DefaultOidcUser) {
                     user = (DefaultOidcUser) principal;
-                    User userLogin = defaultUserService.processOAuthPostLogin(UserConverter.toDtoGoogle(user));
+                   // User userLogin = defaultUserService.processOAuthPostLogin(UserConverter.toDtoGoogle(user));
 
-                    if (userLogin != null) {
+                  /*  if (userLogin != null) {
                         request.getSession().setAttribute("user", userLogin);
                         response.setStatus(HttpServletResponse.SC_OK);
 
-                    }
+                    }*/
                 }
             }
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         });
 
-
-
-
-    /*            .csrf().disable().authorizeRequests()
-                .antMatchers("/register", "/login", "/oauth/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .oauth2Login()
-                .userInfoEndpoint()
-                .userService(oauthUserService).and().successHandler((request, response, authentication) -> {
-            if (authentication != null) {
-                Object principal = authentication.getPrincipal();
-                DefaultOidcUser user;
-                if (principal instanceof DefaultOidcUser) {
-                    user = (DefaultOidcUser) principal;
-                    User userLogin = defaultUserService.processOAuthPostLogin(UserConverter.toDtoGoogle(user));
-
-                    if (userLogin != null) {
-                        request.getSession().setAttribute("user", userLogin);
-                        response.setStatus(HttpServletResponse.SC_OK);
-
-                    }
-                }
-            }
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        });
-*/
     }
 
     @Override
