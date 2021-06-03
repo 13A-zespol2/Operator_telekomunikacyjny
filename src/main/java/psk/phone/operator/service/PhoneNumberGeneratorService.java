@@ -3,33 +3,44 @@ package psk.phone.operator.service;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import psk.phone.operator.database.entities.Contracts;
 import psk.phone.operator.database.entities.PhoneNumber;
+import psk.phone.operator.database.repository.ContractsRepository;
 import psk.phone.operator.database.repository.PhoneNumberRepository;
 
 import java.text.DecimalFormat;
 import java.util.Optional;
 import java.util.Random;
-//TODO DO TESTOW + OBSLUGA ZAPYTAN
+
 @Service
 @NoArgsConstructor
 public class PhoneNumberGeneratorService {
     private final Random random = new Random();
     private PhoneNumberRepository phoneNumberRepository;
-
+    private BalanceNumberService balanceNumberService;
+    private ContractsRepository contractsRepository;
 
     @Autowired
-    public PhoneNumberGeneratorService(PhoneNumberRepository phoneNumberRepository) {
+    public PhoneNumberGeneratorService(PhoneNumberRepository phoneNumberRepository, BalanceNumberService balanceNumberService, ContractsRepository contractsRepository) {
         this.phoneNumberRepository = phoneNumberRepository;
+        this.balanceNumberService = balanceNumberService;
+        this.contractsRepository = contractsRepository;
     }
 
     public PhoneNumber generatePhoneNumberForUser() {
-        String phoneNumber;
+        String phoneNumberString;
         Optional<PhoneNumber> byNumber;
         do {
-            phoneNumber = createPhoneNumber();
-            byNumber = phoneNumberRepository.findByNumber(phoneNumber);
-        } while (phoneNumber.isEmpty());
-        return phoneNumberRepository.save(new PhoneNumber(phoneNumber, null));
+            phoneNumberString = createPhoneNumber();
+            byNumber = phoneNumberRepository.findByNumber(phoneNumberString);
+        } while (phoneNumberString.isEmpty());
+        PhoneNumber phoneNumber1 = new PhoneNumber(phoneNumberString, null);
+        Optional<Contracts> contracts = contractsRepository.findById(1L);
+        if (contracts.isEmpty())
+            return null;
+
+        balanceNumberService.addDataFromContractToAccount(phoneNumber1, contracts.get());
+        return phoneNumberRepository.save(phoneNumber1);
     }
 
     private String createPhoneNumber() {
@@ -42,11 +53,12 @@ public class PhoneNumberGeneratorService {
             phoneNumber.append(formatPartNumber.format(partNumber));
 
         } while (phoneNumber.length() != 9);
+
         return phoneNumber.toString();
     }
 
-    public boolean updatePinForNumber(String number, String newPin) {
-        Optional<PhoneNumber> byNumber = phoneNumberRepository.findByNumber(number);
+    public boolean updatePinForNumber(PhoneNumber number, String newPin) {
+        Optional<PhoneNumber> byNumber = phoneNumberRepository.findByNumber(number.getNumber());
 
         if (byNumber.isPresent()) {
             PhoneNumber phoneNumber = byNumber.get();

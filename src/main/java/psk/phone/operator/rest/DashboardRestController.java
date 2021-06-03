@@ -26,32 +26,6 @@ public class DashboardRestController {
         this.userRepository = user;
     }
 
-    @GetMapping(value = "/generateNewNumber")
-    public void loginUser(HttpSession session) {
-        PhoneNumber phoneNumber = phoneNumberGeneratorService.generatePhoneNumberForUser();
-        User user = new User("wojtek", "g", "wojtekgrelewicz@gmail.com", "qwe");
-        Optional<User> byEmail = userRepository.findByEmail("wojtekgrelewicz@gmail.com");
-        User user1 = byEmail.get();
-        UserPhoneNumber save = userPhoneNumberRepository.save(new UserPhoneNumber(user1, phoneNumber));
-        if(save != null)
-        {
-           // userPhoneNumberRepository.findByIdUserPhoneNumber(user1);
-        }
-    }
-
-
-
-
-
-
-    @PutMapping("/{email}")
-    public void editUser(@PathVariable String email) {
-     /*   if (userRepository.existsById(id)) {
-            return ResponseEntity.ok(userRepository.save(UserConverter.updateEntity(id, User)));
-        } else {
-            return ResponseEntity.notFound().build();
-        }*/
-    }
 
 
 }

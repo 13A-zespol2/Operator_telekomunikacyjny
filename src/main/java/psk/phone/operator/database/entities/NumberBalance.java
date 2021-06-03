@@ -1,6 +1,7 @@
 package psk.phone.operator.database.entities;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Data
 @Entity
+@Builder
 public class NumberBalance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +19,7 @@ public class NumberBalance {
     @OneToOne
     private PhoneNumber phoneNumber;
     private Double balanceAccount;
-    private Double balanceInternet;
+    private int balanceInternet;
+    private int balanceMinutes;
     private int smsBalance;
 }

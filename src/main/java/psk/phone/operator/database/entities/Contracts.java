@@ -22,6 +22,7 @@ public class Contracts {
     private String name;
     private int contractMinutes;
     private int contractSms;
+    private int contractsInternet;
     private double monthlyCost;
 
 }

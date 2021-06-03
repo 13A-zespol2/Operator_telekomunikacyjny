@@ -1,4 +1,4 @@
-package psk.phone.operator.rest;
+package psk.phone.operator.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class ContractsService {
         this.contractsRepository = contractsRepository;
     }
 
-    public Optional<ContractsPhoneNumber> assignContractTOPhoneNUmber(PhoneNumber phoneNumber, long idContract) {
+    public Optional<ContractsPhoneNumber> assignContractToPhoneNUmber(PhoneNumber phoneNumber, long idContract) {
         Optional<Contracts> contractsOptional = contractsRepository.findById(idContract);
         if (contractsOptional.isPresent()) {
             Contracts contracts1 = contractsOptional.get();

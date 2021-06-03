@@ -1,4 +1,4 @@
-package psk.phone.operator.rest;
+package psk.phone.operator.config.security;
 
 import com.google.api.client.auth.openidconnect.IdTokenVerifier;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
