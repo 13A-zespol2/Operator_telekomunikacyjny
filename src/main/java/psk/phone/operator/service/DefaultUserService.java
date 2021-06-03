@@ -33,7 +33,7 @@ public class DefaultUserService {
 
     }
 
-
+    //TODO nie ma dodawania numeru
     public Optional<UserDto> registerNewUserAccount(User userToRegister) throws UserAlreadyExistException {
         User user;
         try {
@@ -59,17 +59,18 @@ public class DefaultUserService {
         }
     }
 
-    public UserDto loginGoogleUser(User user) {
+    public Optional<User> loginGoogleUser(User user) {
         try {
-            return UserConverter.toDto(emailExist(user.getEmail()));
+
+            return Optional.of(emailExist(user.getEmail()));
         } catch (UserAlreadyExistException e) {
             User newGoogleUser = userRepository.save(user);
             try {
                 registerUserNumber(newGoogleUser);
             } catch (OpenDataException openDataException) {
-                return null;
+                return Optional.empty();
             }
-            return UserConverter.toDto(user);
+            return Optional.of(user);
         }
     }
 

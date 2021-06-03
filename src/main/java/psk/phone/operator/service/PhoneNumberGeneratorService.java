@@ -38,9 +38,9 @@ public class PhoneNumberGeneratorService {
         Optional<Contracts> contracts = contractsRepository.findById(1L);
         if (contracts.isEmpty())
             return null;
-
+        PhoneNumber save = phoneNumberRepository.save(phoneNumber1);
         balanceNumberService.addDataFromContractToAccount(phoneNumber1, contracts.get());
-        return phoneNumberRepository.save(phoneNumber1);
+        return save;
     }
 
     private String createPhoneNumber() {

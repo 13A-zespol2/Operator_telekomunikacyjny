@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface UserPhoneNumberRepository extends JpaRepository<UserPhoneNumber, Long> {
 
-    List<PhoneNumber> findByIdUserPhoneNumber(User user);
+    List<UserPhoneNumber> findByUser(User user);
 
 }

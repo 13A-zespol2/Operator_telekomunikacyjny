@@ -6,10 +6,12 @@ import com.google.api.client.json.gson.GsonFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import psk.phone.operator.config.security.GoogleIdTokenVerifier;
 import psk.phone.operator.database.entities.User;
+import psk.phone.operator.database.entities.UserPhoneNumber;
 import psk.phone.operator.database.repository.UserPhoneNumberRepository;
 import psk.phone.operator.service.DefaultUserService;
 import psk.phone.operator.transport.converter.UserConverter;
@@ -20,7 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -48,9 +52,12 @@ public class AuthRestController {
 
     @SneakyThrows
     @PostMapping(value = "/register")
-    public ResponseEntity<UserDto> registerNewUser(@RequestBody UserDto user) {
+    public ResponseEntity<?> registerNewUser(@RequestBody UserDto user) {
         Optional<UserDto> user1 = defaultUserService.registerNewUserAccount(UserConverter.toEntity(user));
-        return user1.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
+        if (user1.isPresent())
+            return new ResponseEntity<>(HttpStatus.OK);
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 
@@ -69,17 +76,23 @@ public class AuthRestController {
             user = User.builder().email(email).name(familyName).surname(givenName).build();
         }
         if (user != null) {
-            UserDto userDto = defaultUserService.loginGoogleUser(user);
-            request.getSession().setAttribute("loggedIn", userDto);
-            return ResponseEntity.ok(loadDataToDashboard(user));
+            Optional<User> userDto = defaultUserService.loginGoogleUser(user);
+            if (userDto.isPresent()) {
+                request.getSession().setAttribute("loggedIn", UserConverter.toDto(userDto.get()));
+                return ResponseEntity.ok(loadDataToDashboard(userDto.get()));
+            }
         }
         return ResponseEntity.badRequest().build();
     }
 
 
     private DashboardDto loadDataToDashboard(User user) {
+        List<UserPhoneNumber> dashboardDto = userPhoneNumberRepository.findByUser(user);
+        List<String> collectPhones = dashboardDto.stream().map(e -> e.getPhoneNumber().getNumber()).collect(Collectors.toList());
 
-        return new DashboardDto(userPhoneNumberRepository.findByIdUserPhoneNumber(user), null, null);
+        return new DashboardDto(collectPhones, null, null);
+
+
     }
 
 }
