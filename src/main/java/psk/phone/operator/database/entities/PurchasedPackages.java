@@ -1,8 +1,6 @@
 package psk.phone.operator.database.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -11,6 +9,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Data
 @Entity
+@Getter
+@Setter
 public class PurchasedPackages {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
