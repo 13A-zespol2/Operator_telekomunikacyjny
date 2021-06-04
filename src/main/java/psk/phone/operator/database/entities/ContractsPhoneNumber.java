@@ -24,4 +24,9 @@ public class ContractsPhoneNumber {
     private PhoneNumber phoneNumber;
     private LocalDate datePurchase;
 
+    public ContractsPhoneNumber(Contracts contracts, PhoneNumber phoneNumber, LocalDate datePurchase) {
+        this.contracts = contracts;
+        this.phoneNumber = phoneNumber;
+        this.datePurchase = datePurchase;
+    }
 }

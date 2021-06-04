@@ -11,18 +11,6 @@ import psk.phone.operator.transport.dto.UserDto;
 
 public class EditUserRestController {
 
-  /*  @PostMapping
-    public void changePasswordForUSer(@RequestBody UserDto userDto)
-    {
-
-    }
-
-    @PostMapping
-    public void changePinForPhoneNumber(@RequestBody PhoneNumber dto)
-    {
-
-    }*/
-
 
 
 

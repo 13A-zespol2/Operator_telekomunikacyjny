@@ -21,5 +21,6 @@ public class Package {
     private String namePackage;
     private int numberOfSms;
     private int numberOfMinutes;
+    private int numberOfInternet;
     private double price;
 }
