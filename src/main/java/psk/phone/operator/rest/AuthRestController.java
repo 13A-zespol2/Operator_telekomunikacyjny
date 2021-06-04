@@ -73,7 +73,7 @@ public class AuthRestController {
             String email = payload.getEmail();
             String familyName = (String) payload.get("family_name");
             String givenName = (String) payload.get("given_name");
-            user = User.builder().email(email).name(familyName).surname(givenName).build();
+            user = User.builder().email(email).name(givenName).surname(familyName).build();
         }
         if (user != null) {
             Optional<User> userDto = defaultUserService.loginGoogleUser(user);

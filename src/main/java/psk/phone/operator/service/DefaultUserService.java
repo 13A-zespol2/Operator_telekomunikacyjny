@@ -39,10 +39,13 @@ public class DefaultUserService {
         try {
             user = emailExist(userToRegister.getEmail());
         } catch (UserAlreadyExistException e) {
-            return Optional.empty();
+            user = userRepository.save(userToRegister);
+            try {
+                registerUserNumber(user);
+            } catch (OpenDataException openDataException) {
+                return Optional.empty();
+            }
         }
-        user = userRepository.save(userToRegister);
-
         return Optional.of(UserConverter.toDto(user));
     }
 
@@ -80,8 +83,7 @@ public class DefaultUserService {
 
     private UserPhoneNumber registerUserNumber(User user) throws OpenDataException {
         PhoneNumber phoneNumber = phoneNumberGeneratorService.generatePhoneNumberForUser();
-        UserPhoneNumber save = userPhoneNumberRepository.save(new UserPhoneNumber(user, phoneNumber));
-        return save;
+        return userPhoneNumberRepository.save(new UserPhoneNumber(user, phoneNumber));
     }
 
 
