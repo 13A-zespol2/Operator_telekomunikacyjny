@@ -39,6 +39,7 @@ public class DefaultUserService {
         try {
             user = emailExist(userToRegister.getEmail());
         } catch (UserAlreadyExistException e) {
+            encodePassword(userToRegister);
             user = userRepository.save(userToRegister);
             try {
                 registerUserNumber(user);
@@ -86,5 +87,8 @@ public class DefaultUserService {
         return userPhoneNumberRepository.save(new UserPhoneNumber(user, phoneNumber));
     }
 
+    private void encodePassword(User userFromBase) {
+        userFromBase.setPassword(passwordEncoder.encode(userFromBase.getPassword()));
+    }
 
 }
