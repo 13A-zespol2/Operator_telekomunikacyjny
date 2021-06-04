@@ -32,7 +32,7 @@ class PhoneHistoryRepositoryTest {
 
         PhoneNumber byIdPhoneNumber = phoneNumberRepository.findByIdPhoneNumber(1L);
 
-        ArrayList<PhoneHistory> phoneHistories = phoneHistoryRepository.phoneCallHistoryToInvoice(byIdPhoneNumber, Date.valueOf("2021-05-01"));
+       // ArrayList<PhoneHistory> phoneHistories = phoneHistoryRepository.phoneCallHistoryToInvoice(byIdPhoneNumber, Date.valueOf("2021-05-01"));
 
 
         System.out.println("123");

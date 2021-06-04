@@ -1,8 +1,6 @@
 package psk.phone.operator.database.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -10,6 +8,8 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor
 @Data
+@Getter
+@Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +19,12 @@ public class User {
     @Column(unique = true)
     private String email;
     private String password;
+
+    public User(Long idUser, String name, String surname) {
+        this.idUser = idUser;
+        this.name = name;
+        this.surname = surname;
+    }
 
     public User(String name, String surname, String email, String password) {
         this.name = name;

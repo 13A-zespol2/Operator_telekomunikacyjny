@@ -17,6 +17,6 @@ public class NumberBalance {
     @OneToOne
     private PhoneNumber phoneNumber;
     private Double balanceAccount;
-    private Double balanceInternet;
+    private Double minuteBalance;
     private int smsBalance;
 }
