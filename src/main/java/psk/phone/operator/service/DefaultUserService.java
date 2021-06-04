@@ -50,14 +50,14 @@ public class DefaultUserService {
         return Optional.of(UserConverter.toDto(user));
     }
 
-    public Optional<UserDto> loginUser(User user) throws UserAlreadyExistException {
+    public Optional<User> loginUser(User user) throws UserAlreadyExistException {
         try {
             User user1 = emailExist(user.getEmail());
             String password = user.getPassword();
             if (!passwordEncoder.matches(password, user1.getPassword())) {
                 throw new UserPasswordException("Password user " + user.getEmail() + " incorrectly");
             }
-            return Optional.of(UserConverter.toDto(user1));
+            return Optional.of(user1);
         } catch (UserAlreadyExistException e) {
             return Optional.empty();
         }

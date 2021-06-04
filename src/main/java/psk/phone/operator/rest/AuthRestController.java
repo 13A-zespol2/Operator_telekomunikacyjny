@@ -41,11 +41,11 @@ public class AuthRestController {
 
     @PostMapping(value = "/login")
     public ResponseEntity<DashboardDto> loginBasicUser(@RequestBody UserDto user, HttpServletRequest request) {
-        Optional<UserDto> user1 = defaultUserService.loginUser(UserConverter.toEntity(user));
+        Optional<User> user1 = defaultUserService.loginUser(UserConverter.toEntity(user));
         if (user1.isPresent()) {
-            UserDto userDto = user1.get();
-            request.getSession().setAttribute("loggedIn", userDto);
-            return ResponseEntity.ok(loadDataToDashboard(UserConverter.toEntity(userDto)));
+            User user2 = user1.get();
+            request.getSession().setAttribute("loggedIn", UserConverter.toDto(user2));
+            return ResponseEntity.ok(loadDataToDashboard(user2));
         }
         return ResponseEntity.notFound().build();
     }
