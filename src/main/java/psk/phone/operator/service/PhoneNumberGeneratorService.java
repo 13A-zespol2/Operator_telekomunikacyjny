@@ -3,7 +3,7 @@ package psk.phone.operator.service;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import psk.phone.operator.database.entities.Contracts;
+import psk.phone.operator.database.entities.Contract;
 import psk.phone.operator.database.entities.PhoneNumber;
 import psk.phone.operator.database.repository.ContractsRepository;
 import psk.phone.operator.database.repository.PhoneNumberRepository;
@@ -35,7 +35,7 @@ public class PhoneNumberGeneratorService {
             byNumber = phoneNumberRepository.findByNumber(phoneNumberString);
         } while (phoneNumberString.isEmpty());
         PhoneNumber phoneNumber1 = new PhoneNumber(phoneNumberString, null);
-        Optional<Contracts> contracts = contractsRepository.findById(1L);
+        Optional<Contract> contracts = contractsRepository.findById(1L);
         if (contracts.isEmpty())
             return null;
         PhoneNumber save = phoneNumberRepository.save(phoneNumber1);

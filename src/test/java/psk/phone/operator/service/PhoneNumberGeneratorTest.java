@@ -1,6 +1,5 @@
 package psk.phone.operator.service;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import psk.phone.operator.database.entities.PhoneHistory;
 

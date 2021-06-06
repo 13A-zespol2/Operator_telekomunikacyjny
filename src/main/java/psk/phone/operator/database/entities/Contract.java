@@ -15,7 +15,7 @@ import javax.persistence.Id;
 @Getter
 @Setter
 @Entity
-public class Contracts {
+public class Contract {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idContract;

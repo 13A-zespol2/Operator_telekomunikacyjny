@@ -5,12 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import psk.phone.operator.database.entities.*;
 import psk.phone.operator.database.enumeration.InvoiceStatusEnum;
-import psk.phone.operator.database.repository.*;
+import psk.phone.operator.database.repository.ContractPhoneNumberRepository;
+import psk.phone.operator.database.repository.InvoicesRepository;
+import psk.phone.operator.database.repository.PurchasedPackagesRepository;
+import psk.phone.operator.database.repository.UserPhoneNumberRepository;
 
-import java.sql.Date;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,8 +21,7 @@ public class InvoiceService {
     private final PurchasedPackagesRepository purchasedPackagesRepository;
     private final ContractPhoneNumberRepository contractPhoneNumberRepository;
     private final InvoicesRepository invoicesRepository;
-    private double packagePrize;
-    private double monthlyCost;
+
 
     @Autowired
     public InvoiceService(UserPhoneNumberRepository userPhoneNumberRepository, PurchasedPackagesRepository purchasedPackagesRepository, ContractPhoneNumberRepository contractPhoneNumberRepository, InvoicesRepository invoicesRepository) {
@@ -31,55 +31,46 @@ public class InvoiceService {
         this.invoicesRepository = invoicesRepository;
     }
 
-    public String generateInvoiceNumber() {
+
+    private String generateInvoiceNumber() {
 
         int invNr = invoicesRepository.allInvoices() + 1;
         String invNrStr = Integer.toString(invNr);
 
         LocalDate localDate = LocalDate.now();
         DecimalFormat decimalFormat = new DecimalFormat("00");
-        return "OP" + "/" + invNrStr + "/" + localDate.getDayOfMonth() + "/" + decimalFormat.format(localDate.getMonth().getValue()) + "/" + localDate.getYear();
+        return "OP" + "/" + invNrStr + "/" + decimalFormat.format(localDate.getDayOfMonth())
+                + "/" + decimalFormat.format(localDate.getMonth().getValue()) + "/" + localDate.getYear();
     }
 
-    public void creatingInvoice(User user){
+    public void creatingInvoice(User user) {
 
 
         List<UserPhoneNumber> byUser = userPhoneNumberRepository.findByUser(user);
-        List<PhoneNumber> collect = byUser.stream().map(UserPhoneNumber::getPhoneNumber).collect(Collectors.toList());
-
-
-
-        collect.forEach(this::countPrize);
-
-        System.out.println("Package prize = " +  packagePrize);
-        System.out.println("Monthly Cost = " + monthlyCost);
-        double fullCost = packagePrize + monthlyCost;
-        System.out.println("Full Invoice Prize = " + fullCost);
+        List<PhoneNumber> collect = byUser.stream()
+                .map(UserPhoneNumber::getPhoneNumber).collect(Collectors.toList());
 
         String s = generateInvoiceNumber();
-        System.out.println("Invoice Number = " + s);
 
 
-        Invoices i = invoicesRepository.save(new Invoices(null, s, LocalDate.now(), fullCost, InvoiceStatusEnum.UNPAID, user));
+        Invoices i = invoicesRepository.save(new Invoices(null, s, LocalDate.now(), price(collect), InvoiceStatusEnum.UNPAID, user));
 
 
     }
 
-    private void countPrize(PhoneNumber usPhone) {
-        ArrayList<PurchasedPackages> purchasedPackages = purchasedPackagesRepository.findPurchasedPackagesByPhoneNumber(usPhone, LocalDate.now());
-        ArrayList<ContractsPhoneNumber> contractsPhoneNumbers = contractPhoneNumberRepository.findMonthlyCost(usPhone, LocalDate.now());
+    private double price(List<PhoneNumber> usPhone) {
+        double fullCostInvoiceUser = 0;
+        LocalDate now = LocalDate.now();
 
-        if (purchasedPackages != null) {
-            for (PurchasedPackages purchasedPackage : purchasedPackages) {
-                packagePrize += purchasedPackage.getAPackage().getPrice();
-            }
-            if (contractsPhoneNumbers != null) {
-                for (ContractsPhoneNumber contractsPhoneNumber : contractsPhoneNumbers) {
-                    monthlyCost += contractsPhoneNumber.getContracts().getMonthlyCost();
-                }
-            }
+        for (PhoneNumber phoneNumber : usPhone) {
+            List<PurchasedPackages> purchasedPackages = purchasedPackagesRepository.findPurchasedPackagesByPhoneNumber(phoneNumber, now.minusDays(30), now);
+            fullCostInvoiceUser += purchasedPackages != null ? purchasedPackages.stream().mapToDouble(e -> e.getAPackage().getPrice()).sum() : 0;
+
+            List<ContractsPhoneNumber> contractsPhoneNumbers = contractPhoneNumberRepository.findMonthlyCost(phoneNumber);
+            fullCostInvoiceUser += contractsPhoneNumbers != null ? contractsPhoneNumbers.stream().mapToDouble(e -> e.getContract().getMonthlyCost()).sum() : 0;
+
         }
-
+        return fullCostInvoiceUser;
     }
 
 }

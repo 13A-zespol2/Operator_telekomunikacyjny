@@ -2,7 +2,7 @@ package psk.phone.operator.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import psk.phone.operator.database.entities.Contracts;
+import psk.phone.operator.database.entities.Contract;
 import psk.phone.operator.database.entities.ContractsPhoneNumber;
 import psk.phone.operator.database.entities.PhoneNumber;
 import psk.phone.operator.database.repository.ContractPhoneNumberRepository;
@@ -23,10 +23,10 @@ public class ContractsService {
     }
 
     public Optional<ContractsPhoneNumber> assignContractToPhoneNUmber(PhoneNumber phoneNumber, long idContract) {
-        Optional<Contracts> contractsOptional = contractsRepository.findById(idContract);
+        Optional<Contract> contractsOptional = contractsRepository.findById(idContract);
         if (contractsOptional.isPresent()) {
-            Contracts contracts1 = contractsOptional.get();
-            ContractsPhoneNumber save = contractPhoneNumberRepository.save(new ContractsPhoneNumber(contracts1, phoneNumber, LocalDate.now()));
+            Contract contract1 = contractsOptional.get();
+            ContractsPhoneNumber save = contractPhoneNumberRepository.save(new ContractsPhoneNumber(contract1, phoneNumber, LocalDate.now()));
             return Optional.of(save);
         }
         return Optional.empty();

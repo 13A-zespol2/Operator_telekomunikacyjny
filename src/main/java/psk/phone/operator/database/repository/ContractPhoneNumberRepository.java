@@ -9,11 +9,12 @@ import psk.phone.operator.database.entities.PhoneNumber;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public interface ContractPhoneNumberRepository extends JpaRepository<ContractsPhoneNumber, Long> {
 
-    @Query("SELECT con FROM ContractsPhoneNumber con WHERE con.phoneNumber=?1 and con.datePurchase>?2")
-    ArrayList<ContractsPhoneNumber> findMonthlyCost(PhoneNumber phoneNumber, LocalDate pDate);
+    @Query("SELECT con FROM ContractsPhoneNumber con WHERE con.phoneNumber=?1")
+    List<ContractsPhoneNumber> findMonthlyCost(PhoneNumber phoneNumber);
 
 }

@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,13 +18,13 @@ public class ContractsPhoneNumber {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idContractPhoneNumber;
     @ManyToOne
-    private Contracts contracts;
+    private Contract contract;
     @ManyToOne
     private PhoneNumber phoneNumber;
     private LocalDate datePurchase;
 
-    public ContractsPhoneNumber(Contracts contracts, PhoneNumber phoneNumber, LocalDate datePurchase) {
-        this.contracts = contracts;
+    public ContractsPhoneNumber(Contract contract, PhoneNumber phoneNumber, LocalDate datePurchase) {
+        this.contract = contract;
         this.phoneNumber = phoneNumber;
         this.datePurchase = datePurchase;
     }

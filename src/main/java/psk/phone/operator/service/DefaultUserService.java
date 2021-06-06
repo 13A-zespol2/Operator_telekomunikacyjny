@@ -3,6 +3,7 @@ package psk.phone.operator.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import psk.phone.operator.config.error.NoSuchUserException;
 import psk.phone.operator.config.error.UserAlreadyExistException;
 import psk.phone.operator.config.error.UserPasswordException;
 import psk.phone.operator.database.entities.PhoneNumber;
@@ -13,7 +14,6 @@ import psk.phone.operator.database.repository.UserRepository;
 import psk.phone.operator.transport.converter.UserConverter;
 import psk.phone.operator.transport.dto.UserDto;
 
-import javax.management.openmbean.OpenDataException;
 import java.util.Optional;
 
 @Service
@@ -33,62 +33,52 @@ public class DefaultUserService {
 
     }
 
-    //TODO nie ma dodawania numeru
-    public Optional<UserDto> registerNewUserAccount(User userToRegister) throws UserAlreadyExistException {
-        User user;
-        try {
-            user = emailExist(userToRegister.getEmail());
-        } catch (UserAlreadyExistException e) {
-            encodePassword(userToRegister);
-            user = userRepository.save(userToRegister);
-            try {
-                registerUserNumber(user);
-            } catch (OpenDataException openDataException) {
-                return Optional.empty();
-            }
+    public boolean registerNewUserAccount(UserDto userToRegister) throws UserAlreadyExistException {
+        Optional<User> byEmail = findByEmail(userToRegister.getEmail());
+        if (byEmail.isPresent()) {
+            throw new UserAlreadyExistException("User exists");
         }
-        return Optional.of(UserConverter.toDto(user));
+        String password = userToRegister.getPassword();
+        userToRegister.setPassword(encodePassword(password));
+        User userFromDto = UserConverter.toEntity(userToRegister);
+        User savedUser = userRepository.save(userFromDto);
+        //   UserPhoneNumber userPhoneNumber = registerUserNumber(savedUser);
+        return true;
     }
 
-    public Optional<User> loginUser(User user) throws UserAlreadyExistException {
-        try {
-            User user1 = emailExist(user.getEmail());
-            String password = user.getPassword();
-            if (!passwordEncoder.matches(password, user1.getPassword())) {
-                throw new UserPasswordException("Password user " + user.getEmail() + " incorrectly");
+    public User loginUser(String email, String password) throws UserPasswordException, NoSuchUserException {
+        return findByEmail(email).map(u -> {
+
+            if (!passwordEncoder.matches(password, u.getPassword())) {
+                throw new UserPasswordException("Password user " + email + " incorrectly");
             }
-            return Optional.of(user1);
-        } catch (UserAlreadyExistException e) {
-            return Optional.empty();
+            return u;
+        }).orElseThrow(() -> new NoSuchUserException("User not found"));
+    }
+
+    public User loginGoogleUser(User user) {
+
+        Optional<User> userOptional = findByEmail(user.getEmail());
+
+        if (userOptional.isEmpty()) {
+            User save = userRepository.save(user);
+            registerUserNumber(save);
+            return save;
         }
+        throw new UserAlreadyExistException("User exists");
     }
 
-    public Optional<User> loginGoogleUser(User user) {
-        try {
-
-            return Optional.of(emailExist(user.getEmail()));
-        } catch (UserAlreadyExistException e) {
-            User newGoogleUser = userRepository.save(user);
-            try {
-                registerUserNumber(newGoogleUser);
-            } catch (OpenDataException openDataException) {
-                return Optional.empty();
-            }
-            return Optional.of(user);
-        }
+    private Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
-    private User emailExist(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new UserAlreadyExistException("There is an account with that email address: " + email));
-    }
-
-    private UserPhoneNumber registerUserNumber(User user) throws OpenDataException {
+    private UserPhoneNumber registerUserNumber(User user) {
         PhoneNumber phoneNumber = phoneNumberGeneratorService.generatePhoneNumberForUser();
         return userPhoneNumberRepository.save(new UserPhoneNumber(user, phoneNumber));
     }
 
-    private void encodePassword(User userFromBase) {
-        userFromBase.setPassword(passwordEncoder.encode(userFromBase.getPassword()));
+    private String encodePassword(String userFromBase) {
+        return passwordEncoder.encode(userFromBase);
     }
 
 }
