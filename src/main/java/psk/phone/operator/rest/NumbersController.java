@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/number")
+@RequestMapping("/numbers")
 public class NumbersController {
     private UserPhoneNumberRepository userPhoneNumberRepository;
     private BalanceNumberService balanceNumberService;
@@ -48,7 +48,7 @@ public class NumbersController {
     }
 
 
-    @PutMapping("/changePin/{number}/{pin}")
+    @PutMapping("/{number}/{pin}")
     public ResponseEntity<?> changePinForNumber(@PathVariable String pin, @PathVariable String number) {
         return phoneNumberGeneratorService.updatePinForNumber(number, pin) ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }

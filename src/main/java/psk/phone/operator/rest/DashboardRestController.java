@@ -3,7 +3,6 @@ package psk.phone.operator.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import psk.phone.operator.database.entities.NumberBalance;
 import psk.phone.operator.database.entities.PhoneNumber;
 import psk.phone.operator.database.entities.User;
 import psk.phone.operator.database.entities.UserPhoneNumber;
@@ -26,6 +25,7 @@ public class DashboardRestController {
     private UserRepository userRepository;
     private PhoneNumberGeneratorService phoneNumberGeneratorService;
     private BalanceNumberService balanceNumberService;
+
     @Autowired
     public DashboardRestController(UserPhoneNumberRepository userPhoneNumberRepository, UserRepository userRepository, PhoneNumberGeneratorService phoneNumberGeneratorService, BalanceNumberService balanceNumberService) {
         this.userPhoneNumberRepository = userPhoneNumberRepository;
@@ -50,9 +50,10 @@ public class DashboardRestController {
     }
 
 
-
     @GetMapping("/registerNewNumber")
     public ResponseEntity<?> registerNewNumber(@RequestBody UserDto userDto) {
+
+
         return ResponseEntity.ok().build();
     }
 

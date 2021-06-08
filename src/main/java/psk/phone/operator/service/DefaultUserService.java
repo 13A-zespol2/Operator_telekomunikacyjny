@@ -43,6 +43,7 @@ public class DefaultUserService {
         userToRegister.setPassword(encodePassword(password));
         User userFromDto = UserConverter.toEntity(userToRegister);
         User savedUser = userRepository.save(userFromDto);
+        registerUserNumber(savedUser);
         //   UserPhoneNumber userPhoneNumber = registerUserNumber(savedUser);
         return true;
     }
@@ -73,7 +74,7 @@ public class DefaultUserService {
         return userRepository.findByEmail(email);
     }
 
-    private UserPhoneNumber registerUserNumber(User user) {
+    public UserPhoneNumber registerUserNumber(User user) {
         PhoneNumber phoneNumber = null;
         try {
             phoneNumber = phoneNumberGeneratorService.generatePhoneNumberForUser();

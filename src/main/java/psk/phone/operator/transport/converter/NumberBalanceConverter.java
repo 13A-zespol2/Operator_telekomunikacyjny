@@ -9,6 +9,7 @@ public class NumberBalanceConverter {
                 .balanceInternet(numberBalance.getBalanceInternet())
                 .balanceMinutes(numberBalance.getBalanceMinutes())
                 .balanceAccount(numberBalance.getBalanceAccount())
+                .phoneNumber(numberBalance.getPhoneNumber())
                 .build();
     }
 
