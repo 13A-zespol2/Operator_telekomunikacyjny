@@ -43,13 +43,13 @@ class InvoiceServiceTest {
         UserPhoneNumber userPhoneNumber = new UserPhoneNumber(user, phoneNumber);
 
         Mockito.when(userPhoneNumberRepository.findByUser(user)).thenReturn(List.of(userPhoneNumber));
-        Package aPackage = new Package(null, "start", 200, 2000, 200, 20);
+        Package aPackage = new Package(null, "start", 200, 2000, 200, 20,"ops");
         PurchasedPackages purchasedPackages = new PurchasedPackages(null, aPackage, phoneNumber, LocalDate.of(2021, nowDate.getMonth().getValue(), 20));
         LocalDate localDateStart = nowDate.minusDays(30);
 
         Mockito.when(purchasedPackagesRepository.findPurchasedPackagesByPhoneNumber(phoneNumber, localDateStart, nowDate)).thenReturn(List.of(purchasedPackages));
-        Contract contract = new Contract(null, "start", 200, 2000, 200, 20);
-        ContractsPhoneNumber contractsPhoneNumber = new ContractsPhoneNumber(contract, phoneNumber,LocalDate.of(2021, nowDate.getMonth().getValue(), 20));
+        Contracts contracts = new Contracts(null, "start", 200, 2000, 200, 20);
+        ContractsPhoneNumber contractsPhoneNumber = new ContractsPhoneNumber(contracts, phoneNumber,LocalDate.of(2021, nowDate.getMonth().getValue(), 20));
 
         Mockito.when(contractPhoneNumberRepository.findMonthlyCost(phoneNumber)).thenReturn(List.of(contractsPhoneNumber));
         //when
@@ -61,8 +61,7 @@ class InvoiceServiceTest {
 
         DecimalFormat decimalFormat = new DecimalFormat("00");
         String expectedInvoiceNumber = "OP/1/" + decimalFormat.format(nowDate.getDayOfMonth()) + "/" + decimalFormat.format(nowDate.getMonth().getValue()) + "/" + nowDate.getYear();
-        Invoices
-                expectedInvoice = new Invoices(null, expectedInvoiceNumber, nowDate, expectedMonthlyCost, InvoiceStatusEnum.UNPAID, user);
+        Invoices expectedInvoice = new Invoices(null, expectedInvoiceNumber, nowDate, expectedMonthlyCost, InvoiceStatusEnum.UNPAID, user);
         Mockito.verify(invoicesRepository, Mockito.times(1)).save(Mockito.eq(expectedInvoice));
 
     }
@@ -77,8 +76,8 @@ class InvoiceServiceTest {
         Mockito.when(userPhoneNumberRepository.findByUser(Mockito.eq(user))).thenReturn(List.of(userPhoneNumber));
 
         Mockito.when(purchasedPackagesRepository.findPurchasedPackagesByPhoneNumber(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(List.of());
-        Contract contract = new Contract(null, "start", 200, 2000, 200, 20);
-        ContractsPhoneNumber contractsPhoneNumber = new ContractsPhoneNumber(contract, phoneNumber, LocalDate.now());
+        Contracts contracts = new Contracts(null, "start", 200, 2000, 200, 20);
+        ContractsPhoneNumber contractsPhoneNumber = new ContractsPhoneNumber(contracts, phoneNumber, LocalDate.now());
 
         Mockito.when(contractPhoneNumberRepository.findMonthlyCost(phoneNumber)).thenReturn(List.of(contractsPhoneNumber));
         //when

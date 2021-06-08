@@ -3,7 +3,8 @@ package psk.phone.operator.service;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import psk.phone.operator.database.entities.Contract;
+import psk.phone.operator.config.error.ContractException;
+import psk.phone.operator.database.entities.Contracts;
 import psk.phone.operator.database.entities.PhoneNumber;
 import psk.phone.operator.database.repository.ContractsRepository;
 import psk.phone.operator.database.repository.PhoneNumberRepository;
@@ -27,7 +28,7 @@ public class PhoneNumberGeneratorService {
         this.contractsRepository = contractsRepository;
     }
 
-    public PhoneNumber generatePhoneNumberForUser() {
+    public PhoneNumber generatePhoneNumberForUser() throws ContractException {
         String phoneNumberString;
         Optional<PhoneNumber> byNumber;
         do {
@@ -35,9 +36,10 @@ public class PhoneNumberGeneratorService {
             byNumber = phoneNumberRepository.findByNumber(phoneNumberString);
         } while (phoneNumberString.isEmpty());
         PhoneNumber phoneNumber1 = new PhoneNumber(phoneNumberString, null);
-        Optional<Contract> contracts = contractsRepository.findById(1L);
-        if (contracts.isEmpty())
-            return null;
+        Optional<Contracts> contracts = contractsRepository.findById(1L);
+        if (contracts.isEmpty()) {
+            throw new ContractException("Contract not found");
+        }
         PhoneNumber save = phoneNumberRepository.save(phoneNumber1);
         balanceNumberService.addDataFromContractToAccount(phoneNumber1, contracts.get());
         return save;

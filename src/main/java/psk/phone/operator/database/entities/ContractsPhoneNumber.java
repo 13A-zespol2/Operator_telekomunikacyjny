@@ -18,13 +18,13 @@ public class ContractsPhoneNumber {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idContractPhoneNumber;
     @ManyToOne
-    private Contract contract;
+    private Contracts contracts;
     @ManyToOne
     private PhoneNumber phoneNumber;
     private LocalDate datePurchase;
 
-    public ContractsPhoneNumber(Contract contract, PhoneNumber phoneNumber, LocalDate datePurchase) {
-        this.contract = contract;
+    public ContractsPhoneNumber(Contracts contracts, PhoneNumber phoneNumber, LocalDate datePurchase) {
+        this.contracts = contracts;
         this.phoneNumber = phoneNumber;
         this.datePurchase = datePurchase;
     }

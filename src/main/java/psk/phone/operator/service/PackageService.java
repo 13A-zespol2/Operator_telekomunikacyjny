@@ -29,27 +29,20 @@ public class PackageService {
     }
 
 
-    public PurchasedPackages buyPackage(PhoneNumber phoneNumber, Package aPackage) {
+    public NumberBalance buyPackage(PhoneNumber phoneNumber, Package aPackage) {
+        NumberBalance balanceUpdated = null;
         PurchasedPackages save = purchasedPackagesRepository.save(
                 new PurchasedPackages(null, aPackage, phoneNumber, LocalDate.now()));
         Optional<NumberBalance> byPhoneNumber = numberBalanceRepository.findByPhoneNumber(phoneNumber);
-            if(byPhoneNumber.isPresent())
-            {
-                NumberBalance numberBalance = byPhoneNumber.get();
-    /*            NumberBalance.builder().idNumberBalance(numberBalance)*/
-            }
-return save;
-    }
+        if (byPhoneNumber.isPresent()) {
+            NumberBalance numberBalance = byPhoneNumber.get();
+            numberBalance.setBalanceMinutes(numberBalance.getBalanceMinutes() + aPackage.getNumberOfMinutes());
+            numberBalance.setBalanceInternet(numberBalance.getBalanceInternet() + aPackage.getNumberOfInternet());
+            numberBalance.setSmsBalance(numberBalance.getSmsBalance() + aPackage.getNumberOfSms());
 
-
-    public PurchasedPackages registerNewUserPackage(PhoneNumber phoneNumber) throws OpenDataException {
-        Optional<Package> starter = packageRepository.findByNamePackage("STARTER");
-        if (starter.isEmpty()) {
-            throw new OpenDataException("Not found STARTER package");
+            balanceUpdated = numberBalanceRepository.save(numberBalance);
         }
-        //TODO
-        // PurchasedPackages purchasedPackages = new PurchasedPackages(LocalDate.now(), null, starter.get(), phoneNumber);
-        return purchasedPackagesRepository.save(null);
+        return balanceUpdated;
     }
 
 }

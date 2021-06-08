@@ -2,7 +2,7 @@ package psk.phone.operator.transport.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import psk.phone.operator.database.entities.Contract;
+import psk.phone.operator.database.entities.Contracts;
 import psk.phone.operator.database.entities.Invoices;
 
 import java.util.List;
@@ -11,13 +11,13 @@ import java.util.List;
 @NoArgsConstructor
 public class DashboardDto {
     private List<String> phoneNumberList;
-    private Contract contract;
+    private Contracts contracts;
     private Invoices invoices;
 
 
-    public DashboardDto(List<String> byIdUserPhoneNumber, Invoices invoices, Contract contract) {
+    public DashboardDto(List<String> byIdUserPhoneNumber, Invoices invoices, Contracts contracts) {
      this.phoneNumberList = byIdUserPhoneNumber;
-        this.contract = contract;
+        this.contracts = contracts;
         this.invoices = invoices;
     }
 }

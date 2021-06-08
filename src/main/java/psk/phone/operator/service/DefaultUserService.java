@@ -3,6 +3,7 @@ package psk.phone.operator.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import psk.phone.operator.config.error.ContractException;
 import psk.phone.operator.config.error.NoSuchUserException;
 import psk.phone.operator.config.error.UserAlreadyExistException;
 import psk.phone.operator.config.error.UserPasswordException;
@@ -65,7 +66,7 @@ public class DefaultUserService {
             registerUserNumber(save);
             return save;
         }
-        throw new UserAlreadyExistException("User exists");
+        return userOptional.get();
     }
 
     private Optional<User> findByEmail(String email) {
@@ -73,7 +74,13 @@ public class DefaultUserService {
     }
 
     private UserPhoneNumber registerUserNumber(User user) {
-        PhoneNumber phoneNumber = phoneNumberGeneratorService.generatePhoneNumberForUser();
+        PhoneNumber phoneNumber = null;
+        try {
+            phoneNumber = phoneNumberGeneratorService.generatePhoneNumberForUser();
+        } catch (ContractException e) {
+            return null;
+        }
+
         return userPhoneNumberRepository.save(new UserPhoneNumber(user, phoneNumber));
     }
 

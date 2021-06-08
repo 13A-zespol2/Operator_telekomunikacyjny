@@ -1,7 +1,7 @@
 package psk.phone.operator.service;
 
 import org.springframework.stereotype.Service;
-import psk.phone.operator.database.entities.Contract;
+import psk.phone.operator.database.entities.Contracts;
 import psk.phone.operator.database.entities.NumberBalance;
 import psk.phone.operator.database.entities.Package;
 import psk.phone.operator.database.entities.PhoneNumber;
@@ -18,13 +18,13 @@ public class BalanceNumberService {
         this.numberBalanceRepository = numberBalanceRepository;
     }
 
-    public void addDataFromContractToAccount(PhoneNumber phoneNumber1, Contract contract) {
+    public void addDataFromContractToAccount(PhoneNumber phoneNumber1, Contracts contracts) {
         NumberBalance numberBalanceBuilder = NumberBalance.builder()
                 .balanceAccount(0.0)
-                .smsBalance(contract.getContractSms())
+                .smsBalance(contracts.getContractSms())
                 .phoneNumber(phoneNumber1)
-                .balanceInternet(contract.getContractsInternet())
-                .balanceMinutes(contract.getContractMinutes()).build();
+                .balanceInternet(contracts.getContractsInternet())
+                .balanceMinutes(contracts.getContractMinutes()).build();
 
         numberBalanceRepository.save(numberBalanceBuilder);
     }

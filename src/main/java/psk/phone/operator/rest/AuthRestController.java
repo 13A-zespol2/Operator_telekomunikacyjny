@@ -13,8 +13,8 @@ import psk.phone.operator.config.error.NoSuchUserException;
 import psk.phone.operator.config.error.UserPasswordException;
 import psk.phone.operator.config.security.GoogleIdTokenVerifier;
 import psk.phone.operator.database.entities.User;
-import psk.phone.operator.database.repository.UserPhoneNumberRepository;
 import psk.phone.operator.service.DefaultUserService;
+import psk.phone.operator.transport.converter.UserConverter;
 import psk.phone.operator.transport.dto.UserDto;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +31,6 @@ public class AuthRestController {
     private DefaultUserService defaultUserService;
 
 
-
     @Autowired
     public AuthRestController(DefaultUserService defaultUserService) {
         this.defaultUserService = defaultUserService;
@@ -39,10 +38,10 @@ public class AuthRestController {
 
 
     @PostMapping(value = "/login")
-    public ResponseEntity<User> loginBasicUser(@RequestBody UserDto user) {
+    public ResponseEntity<UserDto> loginBasicUser(@RequestBody UserDto user) {
         try {
             User user1 = defaultUserService.loginUser(user.getEmail(), user.getPassword());
-            return ResponseEntity.ok(user1);
+            return ResponseEntity.ok(UserConverter.toDto(user1));
         } catch (NoSuchUserException e) {
             return ResponseEntity.notFound().build();
         } catch (UserPasswordException e) {
@@ -62,7 +61,7 @@ public class AuthRestController {
 
 
     @GetMapping(value = "/googleRegister/{idToken}")
-    public ResponseEntity<User> loginGoogleUser(HttpServletRequest request, @PathVariable String idToken) throws GeneralSecurityException, IOException {
+    public ResponseEntity<UserDto> loginGoogleUser(HttpServletRequest request, @PathVariable String idToken) throws GeneralSecurityException, IOException {
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
                 .setAudience(Collections.singletonList(googleClientId))
                 .build();
@@ -76,13 +75,11 @@ public class AuthRestController {
             user = User.builder().email(email).name(givenName).surname(familyName).build();
         }
         if (user != null) {
-            User userDto = defaultUserService.loginGoogleUser(user);
-            return ResponseEntity.ok(userDto);
+            User user1 = defaultUserService.loginGoogleUser(user);
+            return ResponseEntity.ok(UserConverter.toDto(user1));
         }
         return ResponseEntity.badRequest().build();
     }
-
-
 
 
 }

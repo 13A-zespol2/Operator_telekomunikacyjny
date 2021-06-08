@@ -23,4 +23,5 @@ public class Package {
     private int numberOfMinutes;
     private int numberOfInternet;
     private double price;
+    private String description;
 }

@@ -67,7 +67,7 @@ public class InvoiceService {
             fullCostInvoiceUser += purchasedPackages != null ? purchasedPackages.stream().mapToDouble(e -> e.getAPackage().getPrice()).sum() : 0;
 
             List<ContractsPhoneNumber> contractsPhoneNumbers = contractPhoneNumberRepository.findMonthlyCost(phoneNumber);
-            fullCostInvoiceUser += contractsPhoneNumbers != null ? contractsPhoneNumbers.stream().mapToDouble(e -> e.getContract().getMonthlyCost()).sum() : 0;
+            fullCostInvoiceUser += contractsPhoneNumbers != null ? contractsPhoneNumbers.stream().mapToDouble(e -> e.getContracts().getMonthlyCost()).sum() : 0;
 
         }
         return fullCostInvoiceUser;
