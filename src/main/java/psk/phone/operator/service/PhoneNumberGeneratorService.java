@@ -2,6 +2,7 @@ package psk.phone.operator.service;
 
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import psk.phone.operator.config.error.ContractException;
 import psk.phone.operator.database.entities.Contracts;
@@ -17,15 +18,17 @@ import java.util.Random;
 @NoArgsConstructor
 public class PhoneNumberGeneratorService {
     private final Random random = new Random();
+    private PasswordEncoder passwordEncoder;
     private PhoneNumberRepository phoneNumberRepository;
     private BalanceNumberService balanceNumberService;
     private ContractsRepository contractsRepository;
 
     @Autowired
-    public PhoneNumberGeneratorService(PhoneNumberRepository phoneNumberRepository, BalanceNumberService balanceNumberService, ContractsRepository contractsRepository) {
+    public PhoneNumberGeneratorService(PhoneNumberRepository phoneNumberRepository, BalanceNumberService balanceNumberService, ContractsRepository contractsRepository,PasswordEncoder passwordEncoder) {
         this.phoneNumberRepository = phoneNumberRepository;
         this.balanceNumberService = balanceNumberService;
         this.contractsRepository = contractsRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public PhoneNumber generatePhoneNumberForUser() throws ContractException {
@@ -34,7 +37,7 @@ public class PhoneNumberGeneratorService {
         do {
             phoneNumberString = createPhoneNumber();
             byNumber = phoneNumberRepository.findByNumber(phoneNumberString);
-        } while (phoneNumberString.isEmpty());
+        } while (phoneNumberString.isEmpty() || phoneNumberString.startsWith("0"));
         PhoneNumber phoneNumber1 = new PhoneNumber(phoneNumberString, null);
         Optional<Contracts> contracts = contractsRepository.findById(1L);
         if (contracts.isEmpty()) {
@@ -59,12 +62,12 @@ public class PhoneNumberGeneratorService {
         return phoneNumber.toString();
     }
 
-    public boolean updatePinForNumber(PhoneNumber number, String newPin) {
-        Optional<PhoneNumber> byNumber = phoneNumberRepository.findByNumber(number.getNumber());
+    public boolean updatePinForNumber(String number, String newPin) {
+        Optional<PhoneNumber> byNumber = phoneNumberRepository.findByNumber(number);
 
         if (byNumber.isPresent()) {
             PhoneNumber phoneNumber = byNumber.get();
-            phoneNumber.setPin(newPin);
+            phoneNumber.setPin(passwordEncoder.encode(newPin));
             phoneNumberRepository.save(phoneNumber);
             return true;
         }

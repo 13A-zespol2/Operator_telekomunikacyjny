@@ -6,8 +6,12 @@ import psk.phone.operator.database.entities.NumberBalance;
 import psk.phone.operator.database.entities.Package;
 import psk.phone.operator.database.entities.PhoneNumber;
 import psk.phone.operator.database.repository.NumberBalanceRepository;
+import psk.phone.operator.transport.converter.NumberBalanceConverter;
+import psk.phone.operator.transport.dto.NumberBalanceDto;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BalanceNumberService {
@@ -50,5 +54,13 @@ public class BalanceNumberService {
                 .balanceInternet(aPackage.getNumberOfInternet() + numberBalanceFromBase.getBalanceInternet())
                 .balanceMinutes(aPackage.getNumberOfMinutes() + numberBalanceFromBase.getBalanceMinutes()).build();
     }
+
+    public List<NumberBalanceDto> findBalanceForAllNumbers(List<PhoneNumber> phoneNumbers) {
+        return phoneNumbers.stream().map(numberBalanceRepository::findByPhoneNumber)
+                .filter(Optional::isPresent).map(Optional::get)
+                .map(NumberBalanceConverter::toDto)
+                .collect(Collectors.toList());
+    }
+
 
 }

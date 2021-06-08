@@ -11,13 +11,11 @@ import java.util.List;
 @NoArgsConstructor
 public class DashboardDto {
     private List<String> phoneNumberList;
-    private Contracts contracts;
     private Invoices invoices;
 
 
-    public DashboardDto(List<String> byIdUserPhoneNumber, Invoices invoices, Contracts contracts) {
+    public DashboardDto(List<String> byIdUserPhoneNumber, Invoices invoices) {
      this.phoneNumberList = byIdUserPhoneNumber;
-        this.contracts = contracts;
         this.invoices = invoices;
     }
 }
