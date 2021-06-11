@@ -3,6 +3,7 @@ package psk.phone.operator.database.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import psk.phone.operator.database.enumeration.PackageType;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,4 +25,5 @@ public class Package {
     private int numberOfInternet;
     private double price;
     private String description;
+    private PackageType packageType;
 }
