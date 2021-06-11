@@ -13,6 +13,5 @@ public interface PackageRepository extends JpaRepository<Package, Long> {
 
     Optional<Package> findById(Long intet);
 
-    @Override
-    List<Package> findAll();
+
 }

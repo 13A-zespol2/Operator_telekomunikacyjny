@@ -10,6 +10,7 @@ import psk.phone.operator.database.repository.UserPhoneNumberRepository;
 import psk.phone.operator.database.repository.UserRepository;
 import psk.phone.operator.service.BalanceNumberService;
 import psk.phone.operator.service.PhoneNumberGeneratorService;
+import psk.phone.operator.transport.converter.UserConverter;
 import psk.phone.operator.transport.dto.DashboardDto;
 import psk.phone.operator.transport.dto.NumberBalanceDto;
 import psk.phone.operator.transport.dto.UserDto;
@@ -50,15 +51,10 @@ public class DashboardRestController {
     }
 
 
-    @GetMapping("/registerNewNumber")
+    @PostMapping("/registerNewNumber")
     public ResponseEntity<?> registerNewNumber(@RequestBody UserDto userDto) {
+        User byIdUser = userRepository.findByIdUser(UserConverter.toEntity(userDto).getIdUser());
 
-
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/getOtherNumbers")
-    public ResponseEntity<?> getOtherNumbers(@RequestBody UserDto userDto) {
         return ResponseEntity.ok().build();
     }
 

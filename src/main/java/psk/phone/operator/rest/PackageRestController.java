@@ -30,21 +30,14 @@ public class PackageRestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PackageDto>> findAllPackages(){
-       //List<PackageDto> allPackages = packageRepository.findAll().stream().map(PackageConverter::toDto).collect(Collectors.toList());
-        //TODO !!!!!!!!!!!!!!!!!!!!!!!!! ZROBIC findALL nie działa bound of 3
-       List<Package> packages = new ArrayList<>();
-        for(int i  = 0; i < 9; i++)
-        {
-            packages.add(packageRepository.findById((long) i).get());
-        }
-        List<PackageDto> collect = packages.stream().map(PackageConverter::toDto).collect(Collectors.toList());
-        return ResponseEntity.ok(collect);
+    public ResponseEntity<List<PackageDto>> findAllPackages() {
+        List<PackageDto> allPackages = packageRepository.findAll().stream().map(PackageConverter::toDto).collect(Collectors.toList());
+         return ResponseEntity.ok(allPackages);
     }
 
 
     @PutMapping("/{phoneNumber}/{aPackage}")
-    public ResponseEntity<?> addPackageForNumber(@PathVariable PhoneNumber phoneNumber, @PathVariable Package aPackage){
+    public ResponseEntity<?> addPackageForNumber(@PathVariable PhoneNumber phoneNumber, @PathVariable Package aPackage) {
         packageService.buyPackage(phoneNumber, aPackage);
         return ResponseEntity.ok().build();
     }
