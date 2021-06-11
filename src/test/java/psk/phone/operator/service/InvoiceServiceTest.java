@@ -6,6 +6,7 @@ import org.mockito.Mockito;
 import psk.phone.operator.database.entities.Package;
 import psk.phone.operator.database.entities.*;
 import psk.phone.operator.database.enumeration.InvoiceStatusEnum;
+import psk.phone.operator.database.enumeration.PackageType;
 import psk.phone.operator.database.repository.ContractPhoneNumberRepository;
 import psk.phone.operator.database.repository.InvoicesRepository;
 import psk.phone.operator.database.repository.PurchasedPackagesRepository;
@@ -43,7 +44,7 @@ class InvoiceServiceTest {
         UserPhoneNumber userPhoneNumber = new UserPhoneNumber(user, phoneNumber);
 
         Mockito.when(userPhoneNumberRepository.findByUser(user)).thenReturn(List.of(userPhoneNumber));
-        Package aPackage = new Package(null, "start", 200, 2000, 200, 20,"ops");
+        Package aPackage = new Package(null, "start", 200, 2000, 200, 20,"ops", PackageType.MINUTES);
         PurchasedPackages purchasedPackages = new PurchasedPackages(null, aPackage, phoneNumber, LocalDate.of(2021, nowDate.getMonth().getValue(), 20));
         LocalDate localDateStart = nowDate.minusDays(30);
 

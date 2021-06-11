@@ -9,9 +9,11 @@ import psk.phone.operator.database.entities.PurchasedPackages;
 import psk.phone.operator.database.repository.NumberBalanceRepository;
 import psk.phone.operator.database.repository.PackageRepository;
 import psk.phone.operator.database.repository.PurchasedPackagesRepository;
+import psk.phone.operator.transport.dto.PackageDto;
 
 import javax.management.openmbean.OpenDataException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,7 +29,6 @@ public class PackageService {
         this.packageRepository = packageRepository;
         this.numberBalanceRepository = numberBalanceRepository;
     }
-
 
     public NumberBalance buyPackage(PhoneNumber phoneNumber, Package aPackage) {
         NumberBalance balanceUpdated = null;
