@@ -16,5 +16,7 @@ public interface UserPhoneNumberRepository extends JpaRepository<UserPhoneNumber
     @Query("SELECT upn.phoneNumber FROM UserPhoneNumber upn WHERE upn.user=?1")
     ArrayList<PhoneNumber> findByIdUserPhoneNumber(User user);
 
+    int countByUser(User user);
+
     List<UserPhoneNumber> findByUser(User user);
 }
