@@ -11,7 +11,9 @@ import psk.phone.operator.service.PackageService;
 import psk.phone.operator.transport.converter.PackageConverter;
 import psk.phone.operator.transport.dto.PackageDto;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -29,9 +31,15 @@ public class PackageRestController {
 
     @GetMapping
     public ResponseEntity<List<PackageDto>> findAllPackages(){
-        List<PackageDto> allPackages = packageRepository.findAll().stream().map(PackageConverter::toDto).collect(Collectors.toList());
-
-        return ResponseEntity.ok(allPackages);
+       //List<PackageDto> allPackages = packageRepository.findAll().stream().map(PackageConverter::toDto).collect(Collectors.toList());
+        //TODO !!!!!!!!!!!!!!!!!!!!!!!!! ZROBIC findALL nie działa bound of 3
+       List<Package> packages = new ArrayList<>();
+        for(int i  = 0; i < 9; i++)
+        {
+            packages.add(packageRepository.findById(1L).get());
+        }
+        List<PackageDto> collect = packages.stream().map(PackageConverter::toDto).collect(Collectors.toList());
+        return ResponseEntity.ok(collect);
     }
 
 

@@ -1,10 +1,10 @@
-INSERT INTO `user` (`id_user`, `email`, `name`, `password`, `surname`) VALUES ('1', 'email@email.com', 'Karol', '$2y$12$4uM4W5x1iE/nJqJ8QWYkCuXtA37fiaiuLkwij3Lw5tVZ9hWZpnsRS', 'Mik');
-INSERT INTO `user` (`id_user`, `email`, `name`, `password`, `surname`) VALUES ('2', 'email1@email.com', 'Paweł', '$2y$12$4uM4W5x1iE/nJqJ8QWYkCuXtA37fiaiuLkwij3Lw5tVZ9hWZpnsRS', 'Zacharz');
-INSERT INTO `user` (`id_user`, `email`, `name`, `password`, `surname`) VALUES ('3', 'email2@email.com', 'Wojciech', '$2y$12$4uM4W5x1iE/nJqJ8QWYkCuXtA37fiaiuLkwij3Lw5tVZ9hWZpnsRS', 'Grelewicz');
+INSERT INTO `user` (`id_user`, `email`, `name`, `password`, `surname`) VALUES ('1', 'email@email.com', 'Karol', '$2a$10$cSpGppzIKqHy8VYOxOqwrOZxYh8zhZ4uv0eMveLNv2u83QS9t5mTa', 'Mik');
+INSERT INTO `user` (`id_user`, `email`, `name`, `password`, `surname`) VALUES ('2', 'email1@email.com', 'Paweł', '$2a$10$cSpGppzIKqHy8VYOxOqwrOZxYh8zhZ4uv0eMveLNv2u83QS9t5mTa', 'Zacharz');
+INSERT INTO `user` (`id_user`, `email`, `name`, `password`, `surname`) VALUES ('3', 'email2@email.com', 'Wojciech', '$2a$10$cSpGppzIKqHy8VYOxOqwrOZxYh8zhZ4uv0eMveLNv2u83QS9t5mTa', 'Grelewicz');
 
-INSERT INTO `phone_number` (`id_phone_number`, `number`, `pin`) VALUES ('1', '111111111', '$2y$12$unFse/T.4Evm6u8zIaU2TutPaJd9sq3rKQMY3Phq1aFUaOl9VqAD');
-INSERT INTO `phone_number` (`id_phone_number`, `number`, `pin`) VALUES ('2', '222222222', '$2y$12$unFse/T.4Evm6u8zIaU2TutPaJd9sq3rKQMY3Phq1aFUaOl9VqAD');
-INSERT INTO `phone_number` (`id_phone_number`, `number`, `pin`) VALUES ('3', '333333333', '$2y$12$unFse/T.4Evm6u8zIaU2TutPaJd9sq3rKQMY3Phq1aFUaOl9VqAD');
+INSERT INTO `phone_number` (`id_phone_number`, `number`, `pin`) VALUES ('1', '111111111', '$2a$10$cSpGppzIKqHy8VYOxOqwrOZxYh8zhZ4uv0eMveLNv2u83QS9t5mTa');
+INSERT INTO `phone_number` (`id_phone_number`, `number`, `pin`) VALUES ('2', '222222222', '$2a$10$cSpGppzIKqHy8VYOxOqwrOZxYh8zhZ4uv0eMveLNv2u83QS9t5mTa');
+INSERT INTO `phone_number` (`id_phone_number`, `number`, `pin`) VALUES ('3', '333333333', '$2a$10$cSpGppzIKqHy8VYOxOqwrOZxYh8zhZ4uv0eMveLNv2u83QS9t5mTa');
 
 INSERT INTO `user_phone_number` (`id_user_phone_number`, `id_phone_number`, `id_user`) VALUES ('1', '1', '1');
 INSERT INTO `user_phone_number` (`id_user_phone_number`, `id_phone_number`, `id_user`) VALUES ('2', '2', '2');
@@ -29,4 +29,3 @@ INSERT INTO `purchased_packages` (`id_purchase_package`, `date_purchase_date`, `
 INSERT INTO `invoices` (`id_invoice`, `invoice_number`, `date_invoice`, `price`, `status_invoice`, `user_id_user`) VALUES ('1', 'OP/1/05/05/2021', '2021-05-05', '90', '1', '1');
 INSERT INTO `invoices` (`id_invoice`, `invoice_number`, `date_invoice`, `price`, `status_invoice`, `user_id_user`) VALUES ('2', 'OP/2/05/05/2021', '2021-05-05', '80', '1', '2');
 INSERT INTO `invoices` (`id_invoice`, `invoice_number`, `date_invoice`, `price`, `status_invoice`, `user_id_user`) VALUES ('3', 'OP/3/05/06/2021', '2021-06-05', '100', '0', '1');
-

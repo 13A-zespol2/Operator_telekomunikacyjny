@@ -6,10 +6,13 @@ import psk.phone.operator.database.entities.Package;
 
 import java.util.List;
 import java.util.Optional;
+
 @Repository
 public interface PackageRepository extends JpaRepository<Package, Long> {
-    Optional<Package> findByNamePackage(String name);
 
+
+    Optional<Package> findById(Long intet);
+
+    @Override
     List<Package> findAll();
-
 }
