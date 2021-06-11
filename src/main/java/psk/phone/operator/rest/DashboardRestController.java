@@ -59,9 +59,13 @@ public class DashboardRestController {
 
     @PostMapping("/registerNewNumber")
     public ResponseEntity<?> registerNewNumber(@RequestBody UserDto userDto) {
-        User byIdUser = userRepository.findByIdUser(UserConverter.toEntity(userDto).getIdUser());
-        if (userPhoneNumberRepository.countByUser(byIdUser) < 3) {
-            UserPhoneNumber userPhoneNumber = defaultUserService.registerUserNumber(byIdUser);
+        Optional<User> userByEmail = userRepository.findByEmail(userDto.getEmail());
+        if (userByEmail.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        User user = userByEmail.get();
+        if (userPhoneNumberRepository.countByUser(user) < 3) {
+            UserPhoneNumber userPhoneNumber = defaultUserService.registerUserNumber(user);
             return ResponseEntity.ok(userPhoneNumber);
         }
         return ResponseEntity.badRequest().build();
