@@ -36,7 +36,7 @@ public class PackageRestController {
        List<Package> packages = new ArrayList<>();
         for(int i  = 0; i < 9; i++)
         {
-            packages.add(packageRepository.findById(1L).get());
+            packages.add(packageRepository.findById((long) i).get());
         }
         List<PackageDto> collect = packages.stream().map(PackageConverter::toDto).collect(Collectors.toList());
         return ResponseEntity.ok(collect);
