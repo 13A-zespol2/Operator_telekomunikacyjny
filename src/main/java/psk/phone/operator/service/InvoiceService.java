@@ -73,4 +73,11 @@ public class InvoiceService {
         return fullCostInvoiceUser;
     }
 
+
+  /*  public Invoices changeInvoiceStatus(String invoiceNumber){
+        invoicesRepository.findByInvoiceNumber(invoiceNumber).
+
+        return
+    }*/
+
 }

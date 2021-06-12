@@ -2,10 +2,7 @@ package psk.phone.operator.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import psk.phone.operator.database.entities.Invoices;
 import psk.phone.operator.database.entities.User;
 import psk.phone.operator.database.repository.InvoicesRepository;
@@ -45,4 +42,12 @@ public class InvoiceRestController {
 
         return ResponseEntity.ok(invoiceDtoList);
     }
+  /*  @PutMapping(path = "/payment")
+    public ResponseEntity<InvoiceDto> getAllUserInvoice(String statusPayment) {
+
+
+        return ResponseEntity.ok(invoiceDtoList);
+    }*/
+
+
 }

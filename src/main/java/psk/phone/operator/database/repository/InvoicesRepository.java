@@ -1,6 +1,5 @@
 package psk.phone.operator.database.repository;
 
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -21,4 +20,7 @@ public interface InvoicesRepository extends JpaRepository<Invoices, Long> {
 
 
     List<Invoices> findOneInvoiceByUser(User user);
+
+
+    List<Invoices> findByUser(User user);
 }

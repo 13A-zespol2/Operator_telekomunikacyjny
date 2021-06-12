@@ -23,15 +23,17 @@ public class DefaultUserService {
     private final UserPhoneNumberRepository userPhoneNumberRepository;
     private final PasswordEncoder passwordEncoder;
     private final PhoneNumberGeneratorService phoneNumberGeneratorService;
+    private final ContractService contractService;
 
 
     @Autowired
-    public DefaultUserService(UserRepository userRepository, UserPhoneNumberRepository userPhoneNumberRepository, PasswordEncoder passwordEncoder, PhoneNumberGeneratorService phoneNumberGeneratorService) {
+    public DefaultUserService(UserRepository userRepository, UserPhoneNumberRepository userPhoneNumberRepository, PasswordEncoder passwordEncoder, PhoneNumberGeneratorService phoneNumberGeneratorService, ContractService contractService) {
         this.userRepository = userRepository;
         this.userPhoneNumberRepository = userPhoneNumberRepository;
         this.passwordEncoder = passwordEncoder;
         this.phoneNumberGeneratorService = phoneNumberGeneratorService;
 
+        this.contractService = contractService;
     }
 
     public boolean registerNewUserAccount(UserDto userToRegister) throws UserAlreadyExistException {
@@ -77,7 +79,9 @@ public class DefaultUserService {
     public UserPhoneNumber registerUserNumber(User user) {
         PhoneNumber phoneNumber = null;
         try {
+
             phoneNumber = phoneNumberGeneratorService.generatePhoneNumberForUser();
+            contractService.assignContractToPhoneNUmber(phoneNumber, 1L);
         } catch (ContractException e) {
             return null;
         }

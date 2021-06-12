@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import psk.phone.operator.config.error.UserAlreadyExistException;
 import psk.phone.operator.database.entities.User;
 import psk.phone.operator.database.repository.UserPhoneNumberRepository;
 import psk.phone.operator.database.repository.UserRepository;
@@ -20,6 +19,7 @@ class DefaultUserServiceTest {
     private UserPhoneNumberRepository userPhoneNumberRepository;
     private PasswordEncoder passwordEncoder;
     private PhoneNumberGeneratorService phoneNumberGeneratorService;
+    private ContractService contractService;
 
     @BeforeEach
     void setUp() {
@@ -27,7 +27,9 @@ class DefaultUserServiceTest {
         this.userPhoneNumberRepository = Mockito.mock(UserPhoneNumberRepository.class);
         this.passwordEncoder = Mockito.mock(PasswordEncoder.class);
         this.phoneNumberGeneratorService = Mockito.mock(PhoneNumberGeneratorService.class);
-        this.defaultUserService = new DefaultUserService(userRepository, userPhoneNumberRepository, passwordEncoder, phoneNumberGeneratorService);
+        this.phoneNumberGeneratorService = Mockito.mock(PhoneNumberGeneratorService.class);
+        this.contractService = Mockito.mock(ContractService.class);
+        this.defaultUserService = new DefaultUserService(userRepository, userPhoneNumberRepository, passwordEncoder, phoneNumberGeneratorService, contractService);
     }
 
     @Test
