@@ -24,7 +24,7 @@ public class InvoiceScheduling {
         this.invoiceService = invoiceService;
     }
 
-    @Scheduled(cron = "10 * * * * *", zone = "Europe/Warsaw")
+    @Scheduled(cron = "1 0 4 10 * *", zone = "Europe/Warsaw")
     public void generateNewInvoice() {
         List<User> all = userRepository.findAll();
         all.forEach(invoiceService::creatingInvoice);
