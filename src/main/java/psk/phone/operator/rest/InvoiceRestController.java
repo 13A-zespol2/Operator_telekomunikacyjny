@@ -35,11 +35,12 @@ public class InvoiceRestController {
     public ResponseEntity<List<InvoiceDto>> getAllUserInvoice(@RequestBody UserDto userDto) {
         Optional<User> userByEmail = userRepository.findByEmail(userDto.getEmail());
 
+
         if (userByEmail.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
 
-        List<Invoices> invoicesList = invoicesRepository.findByUser(userByEmail.get());
+        List<Invoices> invoicesList = invoicesRepository.findAllByUser(userByEmail.get());
         List<InvoiceDto> invoiceDtoList = invoicesList.stream().map(InvoiceConverter::toDto).collect(Collectors.toList());
 
         return ResponseEntity.ok(invoiceDtoList);

@@ -11,7 +11,6 @@ import psk.phone.operator.database.repository.PackageRepository;
 import psk.phone.operator.database.repository.PurchasedPackagesRepository;
 import psk.phone.operator.transport.dto.PackageDto;
 
-import javax.management.openmbean.OpenDataException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
