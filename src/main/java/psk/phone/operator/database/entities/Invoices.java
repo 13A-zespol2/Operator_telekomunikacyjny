@@ -19,13 +19,13 @@ public class Invoices {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idInvoice;
-    private String InvoiceNumber;
+    private String invoiceNumber;
 
     private LocalDate dateInvoice;
 
     public Invoices(Long idInvoice, String invoiceNumber, LocalDate dateInvoice, Double price, InvoiceStatusEnum statusInvoice, User user) {
         this.idInvoice = idInvoice;
-        InvoiceNumber = invoiceNumber;
+        this.invoiceNumber = invoiceNumber;
         this.dateInvoice = dateInvoice;
         this.price = price;
         this.statusInvoice = statusInvoice;

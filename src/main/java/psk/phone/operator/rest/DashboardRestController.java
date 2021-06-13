@@ -29,16 +29,14 @@ import java.util.stream.Collectors;
 public class DashboardRestController {
     private UserPhoneNumberRepository userPhoneNumberRepository;
     private UserRepository userRepository;
-    private PhoneNumberGeneratorService phoneNumberGeneratorService;
     private BalanceNumberService balanceNumberService;
     private DefaultUserService defaultUserService;
     private InvoicesRepository invoicesRepository;
 
     @Autowired
-    public DashboardRestController(UserPhoneNumberRepository userPhoneNumberRepository, UserRepository userRepository, PhoneNumberGeneratorService phoneNumberGeneratorService, BalanceNumberService balanceNumberService, DefaultUserService defaultUserService, InvoicesRepository invoicesRepository) {
+    public DashboardRestController(UserPhoneNumberRepository userPhoneNumberRepository, UserRepository userRepository, BalanceNumberService balanceNumberService, DefaultUserService defaultUserService, InvoicesRepository invoicesRepository) {
         this.userPhoneNumberRepository = userPhoneNumberRepository;
         this.userRepository = userRepository;
-        this.phoneNumberGeneratorService = phoneNumberGeneratorService;
         this.balanceNumberService = balanceNumberService;
         this.defaultUserService = defaultUserService;
         this.invoicesRepository = invoicesRepository;
@@ -63,11 +61,6 @@ public class DashboardRestController {
             lastInvoice = invoice.get(invoice.size()-1);
             return ResponseEntity.ok(new DashboardDto(collectPhones, lastInvoice));
         }
-
-
-
-
-
 
     }
 

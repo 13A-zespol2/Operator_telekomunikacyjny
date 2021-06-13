@@ -13,6 +13,7 @@ import psk.phone.operator.database.repository.UserPhoneNumberRepository;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -74,10 +75,12 @@ public class InvoiceService {
     }
 
 
-  /*  public Invoices changeInvoiceStatus(String invoiceNumber){
-        invoicesRepository.findByInvoiceNumber(invoiceNumber).
+    public Invoices changeInvoiceStatus(String invoiceNumber){
+        Invoices byInvoiceNumber = invoicesRepository.findByInvoiceNumber(invoiceNumber);
 
-        return
-    }*/
+        byInvoiceNumber.setStatusInvoice(InvoiceStatusEnum.PAID);
+
+        return invoicesRepository.save(byInvoiceNumber);
+    }
 
 }

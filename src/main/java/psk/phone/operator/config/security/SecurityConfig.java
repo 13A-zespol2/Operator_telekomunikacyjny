@@ -19,7 +19,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/register", "/login", "/googleRegister/**","/dashboard/**", "/numbers/**", "/invoice/**", "/packages/**").permitAll()
                 .anyRequest().authenticated();
     }
-
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/v2/api-docs",

@@ -7,6 +7,7 @@ import psk.phone.operator.database.entities.Invoices;
 import psk.phone.operator.database.entities.User;
 import psk.phone.operator.database.repository.InvoicesRepository;
 import psk.phone.operator.database.repository.UserRepository;
+import psk.phone.operator.service.InvoiceService;
 import psk.phone.operator.transport.converter.InvoiceConverter;
 import psk.phone.operator.transport.dto.InvoiceDto;
 import psk.phone.operator.transport.dto.UserDto;
@@ -21,11 +22,12 @@ public class InvoiceRestController {
 
     private final UserRepository userRepository;
     private final InvoicesRepository invoicesRepository;
-
+    private final InvoiceService invoiceService;
     @Autowired
-    public InvoiceRestController(UserRepository userRepository, InvoicesRepository invoicesRepository) {
+    public InvoiceRestController(UserRepository userRepository, InvoicesRepository invoicesRepository, InvoiceService invoiceService) {
         this.userRepository = userRepository;
         this.invoicesRepository = invoicesRepository;
+        this.invoiceService = invoiceService;
     }
 
     @PostMapping
@@ -42,12 +44,11 @@ public class InvoiceRestController {
 
         return ResponseEntity.ok(invoiceDtoList);
     }
-  /*  @PutMapping(path = "/payment")
-    public ResponseEntity<InvoiceDto> getAllUserInvoice(String statusPayment) {
 
-
-        return ResponseEntity.ok(invoiceDtoList);
-    }*/
+    @PutMapping(path = "/payment/{invoiceNumber}")
+    public ResponseEntity<InvoiceDto> changeStatusInvoice(@PathVariable String invoiceNumber) {
+        return ResponseEntity.ok(InvoiceConverter.toDto(invoiceService.changeInvoiceStatus(invoiceNumber)));
+    }
 
 
 }

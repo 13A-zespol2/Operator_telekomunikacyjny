@@ -7,7 +7,6 @@ import psk.phone.operator.database.entities.Invoices;
 import psk.phone.operator.database.entities.User;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface InvoicesRepository extends JpaRepository<Invoices, Long> {
@@ -18,9 +17,10 @@ public interface InvoicesRepository extends JpaRepository<Invoices, Long> {
 
     List<Invoices> findAllByUser(User user);
 
+    @Query("SELECT i FROM Invoices i WHERE i.invoiceNumber = ?1 ")
+    Invoices findByInvoiceNumber(String number);
 
     List<Invoices> findOneInvoiceByUser(User user);
 
 
-    List<Invoices> findByUser(User user);
 }
