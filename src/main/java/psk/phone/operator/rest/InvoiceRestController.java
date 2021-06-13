@@ -45,9 +45,10 @@ public class InvoiceRestController {
         return ResponseEntity.ok(invoiceDtoList);
     }
 
-    @PutMapping(path = "/payment/{invoiceNumber}")
-    public ResponseEntity<InvoiceDto> changeStatusInvoice(@PathVariable String invoiceNumber) {
-        return ResponseEntity.ok(InvoiceConverter.toDto(invoiceService.changeInvoiceStatus(invoiceNumber)));
+    @PutMapping(path = "/payment")
+    public ResponseEntity<?> changeStatusInvoice(@RequestBody InvoiceDto invoiceDto) {
+        invoiceService.changeInvoiceStatus(invoiceDto.getInvoiceNumber());
+        return ResponseEntity.ok().build();
     }
 
 

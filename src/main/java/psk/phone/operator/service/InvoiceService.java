@@ -13,7 +13,6 @@ import psk.phone.operator.database.repository.UserPhoneNumberRepository;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,18 +44,12 @@ public class InvoiceService {
     }
 
     public void creatingInvoice(User user) {
-
-
         List<UserPhoneNumber> byUser = userPhoneNumberRepository.findByUser(user);
         List<PhoneNumber> collect = byUser.stream()
                 .map(UserPhoneNumber::getPhoneNumber).collect(Collectors.toList());
 
         String s = generateInvoiceNumber();
-
-
         Invoices i = invoicesRepository.save(new Invoices(null, s, LocalDate.now(), price(collect), InvoiceStatusEnum.UNPAID, user));
-
-
     }
 
     private double price(List<PhoneNumber> usPhone) {
@@ -75,7 +68,7 @@ public class InvoiceService {
     }
 
 
-    public Invoices changeInvoiceStatus(String invoiceNumber){
+    public Invoices changeInvoiceStatus(String invoiceNumber) {
         Invoices byInvoiceNumber = invoicesRepository.findByInvoiceNumber(invoiceNumber);
 
         byInvoiceNumber.setStatusInvoice(InvoiceStatusEnum.PAID);
