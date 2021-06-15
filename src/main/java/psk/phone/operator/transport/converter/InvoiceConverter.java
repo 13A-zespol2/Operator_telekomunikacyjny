@@ -1,7 +1,9 @@
 package psk.phone.operator.transport.converter;
 
 import psk.phone.operator.database.entities.Invoices;
+import psk.phone.operator.database.entities.Package;
 import psk.phone.operator.transport.dto.InvoiceDto;
+import psk.phone.operator.transport.dto.PackageDto;
 
 public class InvoiceConverter {
     public static InvoiceDto toDto(Invoices invoices){
@@ -12,4 +14,5 @@ public class InvoiceConverter {
                 .user(invoices.getUser())
                 .build();
     }
+
 }

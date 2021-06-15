@@ -16,7 +16,6 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.List;
 
-
 class InvoiceServiceTest {
 
     private InvoiceService invoiceService;
@@ -24,6 +23,7 @@ class InvoiceServiceTest {
     private PurchasedPackagesRepository purchasedPackagesRepository;
     private ContractPhoneNumberRepository contractPhoneNumberRepository;
     private InvoicesRepository invoicesRepository;
+    private PhoneNumberGeneratorService phoneNumberGeneratorService;
 
     @BeforeEach
     void setUp() {
@@ -33,6 +33,7 @@ class InvoiceServiceTest {
         contractPhoneNumberRepository = Mockito.mock(ContractPhoneNumberRepository.class);
         invoicesRepository = Mockito.mock(InvoicesRepository.class);
         this.invoiceService = new InvoiceService(userPhoneNumberRepository, purchasedPackagesRepository, contractPhoneNumberRepository, invoicesRepository);
+
     }
 
     @Test
