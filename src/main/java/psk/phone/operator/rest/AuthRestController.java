@@ -22,16 +22,17 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 
+
+/**
+ * Klasa kontrolera obsługująca endpointy dotyczące logowania/rejestracji użytkownika zwyczajnego oraz autoryzacji logowania za pomocą Google.
+ */
 @RestController
 @RequiredArgsConstructor
 public class AuthRestController {
 
     @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String googleClientId;
-
-
     private DefaultUserService defaultUserService;
-
 
     @Autowired
     public AuthRestController(DefaultUserService defaultUserService) {
@@ -39,6 +40,11 @@ public class AuthRestController {
     }
 
 
+    /**
+     * Metoda odbierająca obiekt z danymi logowania.
+     * @param user
+     * @return
+     */
     @PostMapping(value = "/login")
     public ResponseEntity<UserDto> loginBasicUser(@RequestBody UserDto user) {
         try {
@@ -52,6 +58,11 @@ public class AuthRestController {
     }
 
 
+    /**
+     * Metoda odbierająca obiekt z danymi rejestracyjnymi.
+     * @param userDto
+     * @return
+     */
     @PostMapping(value = "/register")
     public ResponseEntity<?> registerNewUser(@RequestBody UserDto userDto) {
         boolean user1 = defaultUserService.registerNewUserAccount(userDto);
@@ -62,6 +73,15 @@ public class AuthRestController {
     }
 
 
+    /**
+     * Metoda pobierająca token google (zawiera dane konta google). Następnie dane zostają przesłane do metody odpowiadającej za
+     * dodanie użytkownika do bazy danych.
+     * @param request
+     * @param idToken
+     * @return
+     * @throws GeneralSecurityException
+     * @throws IOException
+     */
     @GetMapping(value = "/googleRegister/{idToken}")
     public ResponseEntity<UserDto> loginGoogleUser(HttpServletRequest request, @PathVariable String idToken) throws GeneralSecurityException, IOException {
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new GsonFactory())
@@ -82,6 +102,4 @@ public class AuthRestController {
         }
         return ResponseEntity.badRequest().build();
     }
-
-
 }

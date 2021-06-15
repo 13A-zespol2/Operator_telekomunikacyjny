@@ -15,6 +15,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+
+/**
+ * Klasa odpowiedzialna za pakiety.
+ */
 @Service
 public class PackageService {
 
@@ -29,6 +33,13 @@ public class PackageService {
         this.numberBalanceRepository = numberBalanceRepository;
     }
 
+
+    /**
+     * Metoda odpowiedzialna za dokupienie danego pakietu dla danego numeru (wybranego przez użytkownika).
+     * @param phoneNumber
+     * @param aPackage
+     * @return
+     */
     public NumberBalance buyPackage(PhoneNumber phoneNumber, Package aPackage) {
         NumberBalance balanceUpdated = null;
         PurchasedPackages save = purchasedPackagesRepository.save(

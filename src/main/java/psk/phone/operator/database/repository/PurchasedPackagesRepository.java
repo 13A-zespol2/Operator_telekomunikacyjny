@@ -10,6 +10,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Interfejs odpowiadający za dostęp do tabeli ,,purchased_packages" w bazie danych.
+ */
 @Repository
 public interface PurchasedPackagesRepository extends JpaRepository<PurchasedPackages, Long> {
 

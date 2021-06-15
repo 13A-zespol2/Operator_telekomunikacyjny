@@ -6,6 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import psk.phone.operator.database.entities.PhoneNumber;
 
+
+/**
+ * Klasa transportowa dla klasy NumberBalance.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

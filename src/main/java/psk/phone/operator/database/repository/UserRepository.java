@@ -9,6 +9,10 @@ import psk.phone.operator.database.entities.User;
 import java.util.List;
 import java.util.Optional;
 
+
+/**
+ * Interfejs odpowiadający za dostęp do tabeli ,,user" w bazie danych.
+ */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
@@ -18,8 +22,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
   List<User> findAll();
 
   User findByIdUser (Long id_user);
-
-
-
-
 }

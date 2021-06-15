@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Date;
 
+
+/**
+ * Klasa odpowiadająca za tabelę ,,SmsHistory" (przechowuje wszystkie wysłane SMS).
+ */
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor

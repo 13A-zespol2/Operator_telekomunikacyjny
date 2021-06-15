@@ -1,11 +1,14 @@
 package psk.phone.operator.database.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+
+/**
+ * Klasa odpowiadająca za tabelę ,,PhoneNumber" (przechowuje informacje na temat numerów klientów).
+ */
 @NoArgsConstructor
 @Entity
 @Data

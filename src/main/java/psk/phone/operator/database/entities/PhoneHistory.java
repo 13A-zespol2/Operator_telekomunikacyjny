@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Date;
 
+
+
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -22,5 +25,4 @@ public class PhoneHistory {
     private String status;
     private Date dateCall;
     private Date dateCallEnd;
-
 }

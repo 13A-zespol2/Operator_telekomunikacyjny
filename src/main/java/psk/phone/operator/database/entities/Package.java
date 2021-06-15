@@ -10,11 +10,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+
+
+/**
+ * Klasa odpowiadająca za tabelę ,,Package" (przechowuje informacje na temat dostępnych pakietów).
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
-
 public class Package {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

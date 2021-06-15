@@ -10,6 +10,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+
+/**
+ * Klasa odpowiadająca za tabelę ,,Contracts" - pakiet startowy użytkownika.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

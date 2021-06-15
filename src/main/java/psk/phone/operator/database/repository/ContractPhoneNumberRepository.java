@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Interfejs odpowiadający za dostęp do tabeli ,,Contracts_phone_number" w bazie danych.
+ */
 @Repository
 public interface ContractPhoneNumberRepository extends JpaRepository<ContractsPhoneNumber, Long> {
 

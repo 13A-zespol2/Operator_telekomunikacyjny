@@ -11,6 +11,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+
+/**
+ * Interfejs odpowiadający za dostęp do tabeli ,,sms_history" w bazie danych.
+ */
 @Repository
 public interface SmsHistoryRepository extends JpaRepository<SmsHistory,Long> {
 

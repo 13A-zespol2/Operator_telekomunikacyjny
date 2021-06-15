@@ -16,6 +16,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
+/**
+ * Klasa obsługująca widok ,,Invoices". Zawiera metody obsługujące widok aplikacji wyświetlający faktury użytkownika.
+ */
 @RestController
 @RequestMapping("/invoice")
 public class InvoiceRestController {
@@ -30,6 +34,13 @@ public class InvoiceRestController {
         this.invoiceService = invoiceService;
     }
 
+
+    /**
+     * Metoda odpowiedzialna za odebranie danych użytkownika i przekazanie ich do serwisu odpowiedzialnego
+     * za uzyskanie odpowiednich danych w celu wyświetlenia faktur danego użytkownika.
+     * @param userDto
+     * @return
+     */
     @PostMapping
     public ResponseEntity<List<InvoiceDto>> getAllUserInvoice(@RequestBody UserDto userDto) {
         Optional<User> userByEmail = userRepository.findByEmail(userDto.getEmail());
@@ -45,11 +56,16 @@ public class InvoiceRestController {
         return ResponseEntity.ok(invoiceDtoList);
     }
 
+
+    /**
+     * Metoda odpowiedzialna za odebranie danych o fakturze i przekazanie ich do serwisu odpowiedzialnego
+     * za zmianę statusu.
+     * @param invoiceDto
+     * @return
+     */
     @PutMapping(path = "/payment")
     public ResponseEntity<?> changeStatusInvoice(@RequestBody InvoiceDto invoiceDto) {
         invoiceService.changeInvoiceStatus(invoiceDto.getInvoiceNumber());
         return ResponseEntity.ok().build();
     }
-
-
 }

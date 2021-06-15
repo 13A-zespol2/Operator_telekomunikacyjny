@@ -8,6 +8,9 @@ import psk.phone.operator.database.entities.User;
 
 import java.util.List;
 
+/**
+ * Interfejs odpowiadający za dostęp do tabeli ,,invoices" w bazie danych.
+ */
 @Repository
 public interface InvoicesRepository extends JpaRepository<Invoices, Long> {
 

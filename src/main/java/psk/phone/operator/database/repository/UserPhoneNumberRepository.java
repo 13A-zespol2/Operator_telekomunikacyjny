@@ -10,6 +10,10 @@ import psk.phone.operator.database.entities.UserPhoneNumber;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Interfejs odpowiadający za dostęp do tabeli ,,user_phone_number" w bazie danych.
+ */
 @Repository
 public interface UserPhoneNumberRepository extends JpaRepository<UserPhoneNumber, Long> {
 
