@@ -1,7 +1,5 @@
 package psk.phone.operator.rest;
 
-
-import com.sun.xml.bind.v2.runtime.reflect.Lister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +15,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
+
+/**
+ * Klasa obsługująca widok ,,Packages". Zawiera metody obsługujące widok aplikacji wyświetlający pakiety do zakupu.
+ */
 @RestController
 @RequestMapping("/packages")
 public class PackageRestController {
@@ -32,6 +35,11 @@ public class PackageRestController {
         this.phoneNumberRepository = phoneNumberRepository;
     }
 
+
+    /**
+     * Metoda odpowiedzialna za znalezienie w bazie wszystkich możliwych pakietów.
+     * @return
+     */
     @GetMapping
     public ResponseEntity<List<PackageDto>> findAllPackages() {
         List<PackageDto> allPackages = packageRepository.findAll().stream().map(PackageConverter::toDto).collect(Collectors.toList());
@@ -39,11 +47,16 @@ public class PackageRestController {
     }
 
 
+    /**
+     * Metoda odbierające dane dotyczące zakupu pakietu dokonanego przez użytkownika. Dane przekazywane są do serwisu
+     * odpowiedzialnego za dodanie pakietu.
+     * @param number
+     * @param packageName
+     * @return
+     */
     @PostMapping("/{number}/{packageName}")
     public ResponseEntity<?> addPackageForNumber(@PathVariable String number, @PathVariable String packageName) {
 
-        //Package byPackage = packageRepository.findByDescription(PackageConverter.toEntity(aPackageDto));
-        //Package byPackage = packageRepository.findByDescription(aPackageDto.getDescription());
         Package byNamePackage = packageRepository.findByNamePackage(packageName);
         Optional<PhoneNumber> byNumber = phoneNumberRepository.findByNumber(number);
         packageService.buyPackage(byNumber.get(), byNamePackage);

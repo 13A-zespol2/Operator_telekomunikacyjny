@@ -8,6 +8,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+
+/**
+ * Klasa odpowiadająca za tabelę ,,Contracts for number" - przypisanie abonamentu startowego do numeru.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

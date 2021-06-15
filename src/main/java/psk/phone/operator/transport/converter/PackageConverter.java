@@ -6,8 +6,15 @@ import psk.phone.operator.database.enumeration.PackageType;
 import psk.phone.operator.transport.dto.PackageDto;
 import psk.phone.operator.transport.dto.UserDto;
 
+
+/**
+ * Klasa odpowiedzialna za konwersję obiektów.
+ */
 public class PackageConverter {
 
+    /**
+     * Metoda odpowiedzialna za konwersję obiektu klasy Package do obiektu klasy PackageDto.
+     */
     public static PackageDto toDto (Package aPackage){
         return PackageDto.builder().namePackage(aPackage.getNamePackage())
                 .description(aPackage.getDescription())
@@ -18,10 +25,4 @@ public class PackageConverter {
                 .packageType(aPackage.getPackageType().toString())
                 .build();
     }
-
-    public static Package toEntity(PackageDto packageDto) {
-        return new Package(packageDto.getNamePackage(), packageDto.getNumberOfSms(), packageDto.getNumberOfMinutes(),
-                packageDto.getNumberOfInternet(), packageDto.getPrice(), packageDto.getDescription(), PackageType.valueOf(packageDto.getPackageType()));
-    }
-
 }

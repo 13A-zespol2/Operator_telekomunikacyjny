@@ -5,6 +5,12 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+
+
+/**
+ * Klasa odpowiadająca za tabelę ,,PurchasedPackages" - przechowuje informacje na temat pakietów
+ * zakupionych przez klientów.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

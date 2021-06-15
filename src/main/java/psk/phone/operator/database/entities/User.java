@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+
+/**
+ * Klasa odpowiadająca za tabelę ,,User" (przechowuje dane użytkownika, np. e-mail, hasło).
+ */
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor

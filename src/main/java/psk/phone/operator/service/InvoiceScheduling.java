@@ -11,6 +11,10 @@ import psk.phone.operator.service.InvoiceService;
 
 import java.util.List;
 
+
+/**
+ * Klasa odpowiedzialna za cykliczne generowanie faktur dla danego użytkownika.
+ */
 @Configuration
 @EnableScheduling
 @Slf4j
@@ -24,11 +28,12 @@ public class InvoiceScheduling {
         this.invoiceService = invoiceService;
     }
 
-    @Scheduled(cron = "0 0 4 10 * *", zone = "Europe/Warsaw")
+    /**
+     * Metoda odpowiedzialna za cykliczne wywoływanie funkcji odpowiedzialnej za generowanie faktur dla wszystkich użytkowników.
+     */
+    @Scheduled(cron = "1 0 4 10 * *", zone = "Europe/Warsaw")
     public void generateNewInvoice() {
         List<User> all = userRepository.findAll();
         all.forEach(invoiceService::creatingInvoice);
     }
-
-
 }

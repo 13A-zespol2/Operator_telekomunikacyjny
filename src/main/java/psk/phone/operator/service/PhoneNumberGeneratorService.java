@@ -14,6 +14,11 @@ import java.text.DecimalFormat;
 import java.util.Optional;
 import java.util.Random;
 
+
+
+/**
+ * Klasa odpowiedzialna za generowanie dodatkowych numerów dla użytkownika..
+ */
 @Service
 @NoArgsConstructor
 public class PhoneNumberGeneratorService {
@@ -31,6 +36,12 @@ public class PhoneNumberGeneratorService {
         this.passwordEncoder = passwordEncoder;
     }
 
+
+    /**
+     * Metoda odpowiedzialna za generowanie doatkowego numeru.
+     * @return
+     * @throws ContractException
+     */
     public PhoneNumber generatePhoneNumberForUser() throws ContractException {
         String phoneNumberString;
         Optional<PhoneNumber> byNumber;
@@ -48,6 +59,11 @@ public class PhoneNumberGeneratorService {
         return save;
     }
 
+
+    /**
+     * Metoda odpowiedzialna za utworzenie wygenerowanego numeru.
+     * @return
+     */
     private String createPhoneNumber() {
         DecimalFormat formatPartNumber = new DecimalFormat("000");
         int partNumber;
@@ -62,6 +78,13 @@ public class PhoneNumberGeneratorService {
         return phoneNumber.toString();
     }
 
+
+    /**
+     * Metoda odpowiedzialna za zaktualizowanie kodu PIN dla danego numeru użytkownika.
+     * @param number
+     * @param newPin
+     * @return
+     */
     public boolean updatePinForNumber(String number, String newPin) {
         Optional<PhoneNumber> byNumber = phoneNumberRepository.findByNumber(number);
 

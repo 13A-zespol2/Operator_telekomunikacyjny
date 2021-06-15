@@ -13,9 +13,12 @@ import psk.phone.operator.database.repository.UserPhoneNumberRepository;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
+
+/**
+ * Klasa odpowiedzialna za faktury użytkownika.
+ */
 @Service
 public class InvoiceService {
     private final UserPhoneNumberRepository userPhoneNumberRepository;
@@ -33,6 +36,10 @@ public class InvoiceService {
     }
 
 
+    /**
+     * Metoda odpowiedzialna za generowanie faktury.
+     * @return
+     */
     private String generateInvoiceNumber() {
 
         int invNr = invoicesRepository.allInvoices() + 1;
@@ -44,21 +51,26 @@ public class InvoiceService {
                 + "/" + decimalFormat.format(localDate.getMonth().getValue()) + "/" + localDate.getYear();
     }
 
+
+    /**
+     * Metoda odpowiedzialna za tworzenie faktury na podstawie zakupionych przez użytkownika pakietów.
+     * @param user
+     */
     public void creatingInvoice(User user) {
-
-
         List<UserPhoneNumber> byUser = userPhoneNumberRepository.findByUser(user);
         List<PhoneNumber> collect = byUser.stream()
                 .map(UserPhoneNumber::getPhoneNumber).collect(Collectors.toList());
 
         String s = generateInvoiceNumber();
-
-
         Invoices i = invoicesRepository.save(new Invoices(null, s, LocalDate.now(), price(collect), InvoiceStatusEnum.UNPAID, user));
-
-
     }
 
+
+    /**
+     * Metoda odpowiedzialna za obliczenie kosztów poniesionych przez użytkownika.
+     * @param usPhone
+     * @return
+     */
     private double price(List<PhoneNumber> usPhone) {
         double fullCostInvoiceUser = 0;
         LocalDate now = LocalDate.now();
@@ -75,12 +87,14 @@ public class InvoiceService {
     }
 
 
-    public Invoices changeInvoiceStatus(String invoiceNumber){
+    /**
+     * Metoda odpowiedzialna za zmianę statusu po pomyślnym opłaceniu dokumentu.
+     * @param invoiceNumber
+     * @return
+     */
+    public Invoices changeInvoiceStatus(String invoiceNumber) {
         Invoices byInvoiceNumber = invoicesRepository.findByInvoiceNumber(invoiceNumber);
-
         byInvoiceNumber.setStatusInvoice(InvoiceStatusEnum.PAID);
-
         return invoicesRepository.save(byInvoiceNumber);
     }
-
 }

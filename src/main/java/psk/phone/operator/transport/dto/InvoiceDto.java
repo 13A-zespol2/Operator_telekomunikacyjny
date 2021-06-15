@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import psk.phone.operator.database.entities.Invoices;
 import psk.phone.operator.database.entities.User;
 import psk.phone.operator.database.enumeration.InvoiceStatusEnum;
 
-import java.time.LocalDate;
-import java.util.*;
 
+/**
+ * Klasa transportowa dla klasy Invoice.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

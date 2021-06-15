@@ -20,9 +20,7 @@ class PhoneHistoryRepositoryTest {
 
         // ArrayList<PhoneHistory> phoneHistories = phoneHistoryRepository.phoneCallHistoryToInvoice(byIdPhoneNumber, Date.valueOf("2021-05-01"));
 
-
         System.out.println("123");
-
 
     }
 }

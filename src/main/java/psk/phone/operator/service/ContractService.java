@@ -11,6 +11,10 @@ import psk.phone.operator.database.repository.ContractsRepository;
 import java.time.LocalDate;
 import java.util.Optional;
 
+
+/**
+ * Klasa zarządzająca przypisywaniem pakietu startowego do nowo utworzonego numeru.
+ */
 @Service
 public class ContractService {
     private final ContractPhoneNumberRepository contractPhoneNumberRepository;
@@ -22,6 +26,13 @@ public class ContractService {
         this.contractsRepository = contractsRepository;
     }
 
+
+    /**
+     * Metoda odpowiedzialna za przypisanie pakietu startowego do danego numeru.
+     * @param phoneNumber
+     * @param idContract
+     * @return
+     */
     public Optional<ContractsPhoneNumber> assignContractToPhoneNUmber(PhoneNumber phoneNumber, long idContract) {
         Optional<Contracts> contractsOptional = contractsRepository.findById(idContract);
         if (contractsOptional.isPresent()) {
@@ -31,6 +42,4 @@ public class ContractService {
         }
         return Optional.empty();
     }
-
-
 }

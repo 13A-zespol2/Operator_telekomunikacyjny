@@ -17,6 +17,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
+/**
+ * Klasa obsługująca widok ,,Numbers". Zawiera metody obsługujące widok aplikacji wyświetlający numery użytkownika.
+ */
 @RestController
 @RequestMapping("/numbers")
 public class NumbersController {
@@ -33,6 +37,13 @@ public class NumbersController {
         this.phoneNumberGeneratorService = phoneNumberGeneratorService;
     }
 
+
+    /**
+     * Metoda odpowiedzialna za odebranie danych użytkownika i przekazanie ich do serwisu odpowiedzialnego
+     * za uzyskanie odpowiednich danych w celu wyświetlenia numerów przypisanych do danego użytkownika.
+     * @param userDto
+     * @return
+     */
     @PostMapping
     public ResponseEntity<List<NumberBalanceDto>> findAllUserNumber(@RequestBody UserDto userDto) {
         Optional<User> userByEmail = userRepository.findByEmail(userDto.getEmail());
@@ -48,10 +59,15 @@ public class NumbersController {
     }
 
 
+    /**
+     * Metoda odpowiedzialna za odebranie danych użytkownika i przekazanie ich do serwisu odpowiedzialnego
+     * za zmianę PINu logowania do symulatora połączeń.
+     * @param pin
+     * @param number
+     * @return
+     */
     @PutMapping("/{number}/{pin}")
     public ResponseEntity<?> changePinForNumber(@PathVariable String pin, @PathVariable String number) {
         return phoneNumberGeneratorService.updatePinForNumber(number, pin) ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
-
-
 }

@@ -11,6 +11,10 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
+
+/**
+ * Klasa odpowiadająca za tabelę ,,Invoices" (faktury użytkownika).
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data

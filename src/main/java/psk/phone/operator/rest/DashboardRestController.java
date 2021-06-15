@@ -24,6 +24,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
+/**
+ * Klasa obsługująca widok ,,Dashboard". Zawiera metody obsługujące główny widok aplikacji.
+ */
 @RestController
 @RequestMapping("/dashboard")
 public class DashboardRestController {
@@ -42,6 +46,13 @@ public class DashboardRestController {
         this.invoicesRepository = invoicesRepository;
     }
 
+
+    /**
+     * Metoda odpowiedzialna za odebranie danych zalogowanego użytkownika. Na ich podstawie wyszukuje odpowiednie dane
+     * z innych tabel (np. wyświetlenie odpowiednich numerów czy faktur).
+     * @param userDto
+     * @return
+     */
     @PostMapping
     public ResponseEntity<DashboardDto> getDataToDashboard(@RequestBody UserDto userDto) {
         Optional<User> userByEmail = userRepository.findByEmail(userDto.getEmail());
@@ -64,7 +75,12 @@ public class DashboardRestController {
 
     }
 
-
+    /**
+     * Metoda odpowiedzialna za odebranie danych użytkownika i przekazanie ich do odpowiedniego serwisu odpowiedzialnego
+     * za wygenerowanie nowego numeru dla danego użytkownika. Zwraca status operacji.
+     * @param userDto
+     * @return
+     */
     @PostMapping("/registerNewNumber")
     public ResponseEntity<?> registerNewNumber(@RequestBody UserDto userDto) {
         Optional<User> userByEmail = userRepository.findByEmail(userDto.getEmail());
@@ -78,8 +94,4 @@ public class DashboardRestController {
         }
         return ResponseEntity.badRequest().build();
     }
-
-
-    //TODO PAYPAL
-
 }

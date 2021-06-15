@@ -4,8 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import psk.phone.operator.database.enumeration.PackageType;
 
+
+/**
+ * Klasa transportowa dla klasy Package.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

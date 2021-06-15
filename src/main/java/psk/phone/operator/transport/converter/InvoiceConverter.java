@@ -5,7 +5,15 @@ import psk.phone.operator.database.entities.Package;
 import psk.phone.operator.transport.dto.InvoiceDto;
 import psk.phone.operator.transport.dto.PackageDto;
 
+
+/**
+ * Klasa odpowiedzialna za konwersję obiektów.
+ */
 public class InvoiceConverter {
+
+    /**
+     * Metoda odpowiedzialna za konwersję obiektu klasy Invoice do obiektu klasy InvoiceDto.
+     */
     public static InvoiceDto toDto(Invoices invoices){
         return InvoiceDto.builder().invoiceNumber(invoices.getInvoiceNumber())
                 .price(invoices.getPrice())

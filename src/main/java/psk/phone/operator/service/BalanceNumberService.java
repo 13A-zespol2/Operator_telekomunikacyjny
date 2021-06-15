@@ -3,7 +3,6 @@ package psk.phone.operator.service;
 import org.springframework.stereotype.Service;
 import psk.phone.operator.database.entities.Contracts;
 import psk.phone.operator.database.entities.NumberBalance;
-import psk.phone.operator.database.entities.Package;
 import psk.phone.operator.database.entities.PhoneNumber;
 import psk.phone.operator.database.repository.NumberBalanceRepository;
 import psk.phone.operator.transport.converter.NumberBalanceConverter;
@@ -13,6 +12,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
+/**
+ * Klasa zarządzająca stanem konta użytkownika.
+ */
 @Service
 public class BalanceNumberService {
 
@@ -22,6 +25,13 @@ public class BalanceNumberService {
         this.numberBalanceRepository = numberBalanceRepository;
     }
 
+
+    /**
+     * Metoda odpowiedzialna za ustawienie pakietu (kontraktu) startowego dla każdego użytkownika bezpośrednio
+     * po rejestracji.
+     * @param phoneNumber1
+     * @param contracts
+     */
     public void addDataFromContractToAccount(PhoneNumber phoneNumber1, Contracts contracts) {
         NumberBalance numberBalanceBuilder = NumberBalance.builder()
                 .balanceAccount(0.0)
@@ -34,33 +44,16 @@ public class BalanceNumberService {
     }
 
 
-    public boolean addDataFromPackageToAccount(PhoneNumber phoneNumber1, Package aPackage) {
-
-        Optional<NumberBalance> byPhoneNumber = numberBalanceRepository.findByPhoneNumber(phoneNumber1);
-        if (byPhoneNumber.isPresent()) {
-            NumberBalance numberBalance = byPhoneNumber.get();
-            numberBalanceRepository.save(sumToNumberBalance(numberBalance, aPackage));
-            return true;
-        }
-        return false;
-    }
-
-    private NumberBalance sumToNumberBalance(NumberBalance numberBalanceFromBase, Package aPackage) {
-
-        return NumberBalance.builder()
-                .balanceAccount(0.0)
-                .smsBalance(numberBalanceFromBase.getSmsBalance() + aPackage.getNumberOfSms())
-                .phoneNumber(numberBalanceFromBase.getPhoneNumber())
-                .balanceInternet(aPackage.getNumberOfInternet() + numberBalanceFromBase.getBalanceInternet())
-                .balanceMinutes(aPackage.getNumberOfMinutes() + numberBalanceFromBase.getBalanceMinutes()).build();
-    }
-
+    /**
+     * Metoda odpowiedzialna za pobranie danych dotyczących numerów danego użytkownika i zwrócenie stanu danych
+     * dla wszystkich numerów danego użytkownika.
+     * @param phoneNumbers
+     * @return
+     */
     public List<NumberBalanceDto> findBalanceForAllNumbers(List<PhoneNumber> phoneNumbers) {
         return phoneNumbers.stream().map(numberBalanceRepository::findByPhoneNumber)
                 .filter(Optional::isPresent).map(Optional::get)
                 .map(NumberBalanceConverter::toDto)
                 .collect(Collectors.toList());
     }
-
-
 }

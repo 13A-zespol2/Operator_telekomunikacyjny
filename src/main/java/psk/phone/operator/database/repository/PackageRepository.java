@@ -7,6 +7,10 @@ import psk.phone.operator.database.entities.Package;
 import java.util.List;
 import java.util.Optional;
 
+
+/**
+ * Interfejs odpowiadający za dostęp do tabeli ,,phone_number" w bazie danych.
+ */
 @Repository
 public interface PackageRepository extends JpaRepository<Package, Long> {
 

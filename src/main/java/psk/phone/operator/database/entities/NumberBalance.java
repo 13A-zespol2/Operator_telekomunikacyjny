@@ -7,6 +7,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+
+
+/**
+ * Klasa odpowiadająca za tabelę ,,NumberBalance" (stan wykorzystania pakietów użytkownika).
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
